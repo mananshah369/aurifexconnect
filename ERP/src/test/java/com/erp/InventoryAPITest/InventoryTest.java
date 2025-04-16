@@ -110,4 +110,9 @@ public class InventoryTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @Order(6)
+    void cleanUp() {
+        inventoryRepository.deleteAll();
+    }
 }

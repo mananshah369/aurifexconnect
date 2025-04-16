@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -108,6 +107,12 @@ public class ServiceTypeControllerTest {
 
         mockMvc.perform(get("/service/" + serviceId))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Order(6)
+    void cleanUp() {
+        repository.deleteAll();
     }
 
 

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class InventoryController {
             responses = {
                     @ApiResponse(responseCode = "201",description = "Created Successfully")
             })
-    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@RequestBody InventoryRequest inventoryRequest){
+    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@Valid @RequestBody InventoryRequest inventoryRequest){
         InventoryResponse inventoryResponse = inventoryService.addItem(inventoryRequest);
         return ResponseBuilder.success(HttpStatus.CREATED,"Inventory Created",inventoryResponse);
     }
