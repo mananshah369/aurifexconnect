@@ -1,7 +1,6 @@
 package com.erp.Exception.FiledErrorException;
 
 import com.erp.Utility.FieldErrorResponse;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,17 +31,16 @@ public class FieldErrorExceptionHandler extends ResponseEntityExceptionHandler {
         }
     }
 
-    private FieldErrorResponse createFiledErrorResponse(HttpStatusCode status, List<FieldErrorResponse.CustomFieldError> errors) {
-        FieldErrorResponse error = FieldErrorResponse.builder()
+    private static FieldErrorResponse createFiledErrorResponse(HttpStatusCode status, List<FieldErrorResponse.CustomFieldError> errors) {
+        return FieldErrorResponse.builder()
                 .type(status.toString())
                 .status(status.value())
                 .message("Invalid Input")
-                .errors(errors)
+                .errorList(errors)
                 .build();
-        return error;
     }
     private FieldErrorResponse.CustomFieldError createFiledError(FieldError fieldError) {
-        FieldErrorResponse.CustomFieldError error = FieldErrorResponse.createfieldError(
+        FieldErrorResponse.CustomFieldError error = FieldErrorResponse.createFieldError(
             fieldError.getDefaultMessage(),
             fieldError.getRejectedValue(),
             fieldError.getField());
