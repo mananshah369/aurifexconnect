@@ -1,11 +1,14 @@
 package com.erp.Utility;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
+
 @Getter
 @SuperBuilder
+@AllArgsConstructor
 public class SimpleErrorResponse {
     private String type;
     private int status; // 404
