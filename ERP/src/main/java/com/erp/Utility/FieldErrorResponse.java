@@ -13,6 +13,7 @@ public class FieldErrorResponse extends SimpleErrorResponse{
 
     private List<CustomFieldError> errors;
 
+
     public static CustomFieldError createfieldError(String message, Object rejectedvalue, String filed){
         CustomFieldError error = new CustomFieldError();
         error.message = message;
@@ -23,7 +24,6 @@ public class FieldErrorResponse extends SimpleErrorResponse{
     }
 
     @Getter
-    @Setter
     public static class CustomFieldError {
          private String message;
          private Object rejectedValue;

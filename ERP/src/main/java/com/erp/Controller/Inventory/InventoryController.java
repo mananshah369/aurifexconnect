@@ -100,4 +100,19 @@ public class InventoryController {
         List<InventoryResponse> inventoryResponse = inventoryService.findByItemName(itemName);
         return ResponseBuilder.success(HttpStatus.OK,"Inventory Found Successfully!!", inventoryResponse);
     }
+
+    @GetMapping("inventory/all")
+    @Operation(description = """
+            The API Endpoints to Found All_Inventory 
+            """,
+            responses = {
+                    @ApiResponse(responseCode = "200",description = "Found Successfully"),
+                    @ApiResponse(responseCode = "404",description = "Invalid Item Name",content = {
+                            @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
+                    })
+            })
+    public ResponseEntity<ListResponseStructure<InventoryResponse>> findByAllInventory(){
+        List<InventoryResponse> inventoryResponse = inventoryService.findByAll();
+        return ResponseBuilder.success(HttpStatus.OK,"Inventories Found Successfully!!", inventoryResponse);
+    }
 }
