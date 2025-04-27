@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -99,7 +100,6 @@ public class InventoryController {
         List<InventoryResponse> inventoryResponse = inventoryService.findByItemName(itemName);
         return ResponseBuilder.success(HttpStatus.OK,"Inventory Found Successfully!!", inventoryResponse);
     }
-<<<<<<< HEAD
 
     @GetMapping("inventory/all")
     @Operation(description = """
@@ -116,6 +116,3 @@ public class InventoryController {
         return ResponseBuilder.success(HttpStatus.OK,"Inventories Found Successfully!!", inventoryResponse);
     }
 }
-=======
-}
->>>>>>> 1364881d105d8c5555c89831df4b73eee6afcca7
