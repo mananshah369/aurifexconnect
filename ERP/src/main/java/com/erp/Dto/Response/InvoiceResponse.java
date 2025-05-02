@@ -1,7 +1,6 @@
 package com.erp.Dto.Response;
 
 import com.erp.Enum.InvoiceStatus;
-import com.erp.Model.Customer;
 import lombok.Getter;
 import lombok.Setter;
 

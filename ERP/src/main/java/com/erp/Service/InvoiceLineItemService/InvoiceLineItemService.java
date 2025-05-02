@@ -6,7 +6,7 @@ import com.erp.Model.InvoiceLineItems;
 import java.util.List;
 
 public interface InvoiceLineItemService {
-    InvoiceLineItemsResponse createInvoiceLineItems(long inventoryId, long invoiceId,long customerId , double quantity);
+    InvoiceLineItemsResponse createInvoiceLineItems(long inventoryId, long invoiceId,long ledgerId , double quantity);
 
     List<InvoiceLineItemsResponse> findById(long invoiceId);
 

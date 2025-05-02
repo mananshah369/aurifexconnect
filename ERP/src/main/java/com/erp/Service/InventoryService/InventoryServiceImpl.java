@@ -3,6 +3,7 @@ package com.erp.Service.InventoryService;
 import com.erp.Dto.Request.InventoryRequest;
 import com.erp.Dto.Response.InventoryResponse;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
+import com.erp.Exception.Ledger.LedgerNotFoundException;
 import com.erp.Mapper.Inventory.InventoryMapper;
 import com.erp.Model.Inventory;
 import com.erp.Repository.Inventory.InventoryRepository;
@@ -46,7 +47,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryResponse deleteByItemId(long itemId) {
         Inventory inventory = inventoryRepository.findById(itemId)
-                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "));
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "+itemId));
 
 //        inventory.setDeleted(true);
 //        inventoryRepository.save(inventory);
@@ -58,12 +59,22 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public List<InventoryResponse> findByItemName(String itemName) {
         List<Inventory> inventory = inventoryRepository.findByItemName(itemName);
-        return inventoryMapper.mapToInventoryResponse(inventory);
+
+        if (inventory.isEmpty()) {
+            throw new InventoryNotFoundException("No Inventory Not Found By Name " + itemName);
+        }else {
+            return inventoryMapper.mapToInventoryResponse(inventory);
+        }
     }
 
     @Override
     public List<InventoryResponse> findByAll() {
         List<Inventory> inventories = inventoryRepository.findAll();
-        return inventoryMapper.mapToInventoryResponse(inventories);
+
+        if (inventories.isEmpty()) {
+            throw new InventoryNotFoundException("No Inventories Not Found");
+        }else {
+            return inventoryMapper.mapToInventoryResponse(inventories);
+        }
     }
 }

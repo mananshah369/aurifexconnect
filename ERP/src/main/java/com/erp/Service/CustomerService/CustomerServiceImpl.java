@@ -4,7 +4,7 @@ import com.erp.Dto.Request.CustomerRequest;
 import com.erp.Dto.Response.CustomerResponse;
 import com.erp.Exception.Customer.CustomerNotFoundException;
 import com.erp.Mapper.Customer.CustomerMapper;
-import com.erp.Model.Customer;
+import com.erp.Model.Ledger;
 import com.erp.Repository.Customer.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +21,14 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest){
-        Customer customer = customerMapper.maptoCustomer(customerRequest);
+        Ledger customer = customerMapper.maptoCustomer(customerRequest);
         customerRepository.save(customer);
         return customerMapper.mapToCustomerResponse(customer);
     }
 
     @Override
     public CustomerResponse updateCustomerInfo(CustomerRequest customerRequest, long id){
-        Customer customer = customerRepository.findById(id)
+        Ledger customer = customerRepository.findById(id)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer Not Found! Invalid Id"));
 
         customerMapper.mapToCustomerEntity(customerRequest, customer);
@@ -38,14 +38,14 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponse findByCustomerId(long customerId) {
-        Customer customer = customerRepository.findById(customerId)
+        Ledger customer = customerRepository.findById(customerId)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer Not Found! Invalid Id"));
         return customerMapper.mapToCustomerResponse(customer);
     }
 
     @Override
     public CustomerResponse deleteByCustomerId(long customerId){
-        Customer customer = customerRepository.findById(customerId)
+        Ledger customer = customerRepository.findById(customerId)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer Not Found! Invalid Id"));
         customerRepository.deleteById(customerId);
         return customerMapper.mapToCustomerResponse(customer);
@@ -53,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public List<CustomerResponse> getAllCustomer(){
-        List<Customer> customers = customerRepository.findAll();
+        List<Ledger> customers = customerRepository.findAll();
         return customers.stream()
                 .map(customerMapper::mapToCustomerResponse)
                 .collect(Collectors.toList());

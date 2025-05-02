@@ -6,11 +6,11 @@ import com.erp.Dto.Response.InvoiceResponse;
 import java.util.List;
 
 public interface InvoiceService {
-    InvoiceResponse create(InvoiceRequest request, long customerId);
+    InvoiceResponse create(InvoiceRequest request, long ledgerId);
 
     InvoiceResponse findById(long invoiceId);
 
-    List<InvoiceResponse> findByCustomer_Name(String customerName);
+    List<InvoiceResponse> findByLedger_Name(String ledgerName);
 
     InvoiceResponse delete(long invoiceId);
 

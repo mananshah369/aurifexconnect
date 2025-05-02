@@ -2,7 +2,7 @@ package com.erp.Mapper.Customer;
 
 import com.erp.Dto.Request.CustomerRequest;
 import com.erp.Dto.Response.CustomerResponse;
-import com.erp.Model.Customer;
+import com.erp.Model.Ledger;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CustomerMapper {
 
-    Customer maptoCustomer(CustomerRequest customerRequest);
+    Ledger maptoCustomer(CustomerRequest customerRequest);
 
-    void mapToCustomerEntity(CustomerRequest customerRequest, @MappingTarget Customer customer);
+    void mapToCustomerEntity(CustomerRequest customerRequest, @MappingTarget Ledger customer);
 
-    CustomerResponse mapToCustomerResponse(Customer customer);
+    CustomerResponse mapToCustomerResponse(Ledger customer);
 }

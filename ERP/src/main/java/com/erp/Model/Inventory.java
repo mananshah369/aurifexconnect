@@ -32,7 +32,7 @@ public class Inventory {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
-    @OneToMany(mappedBy = "inventory",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inventory")
     private List<InvoiceLineItems> invoiceLineItem;
 
 }

@@ -20,8 +20,8 @@ public class InvoiceLineItemController {
     private final InvoiceLineItemService invoiceLineItemService;
 
     @PostMapping("create")
-    public ResponseEntity<ResponseStructure<InvoiceLineItemsResponse>> createInvoiceLineItems(@RequestParam long inventoryId, @RequestParam long invoiceId, @RequestParam long customerId, @RequestParam double quantity) {
-        InvoiceLineItemsResponse invoiceLineItemsResponse = invoiceLineItemService.createInvoiceLineItems(inventoryId, invoiceId, customerId, quantity);
+    public ResponseEntity<ResponseStructure<InvoiceLineItemsResponse>> createInvoiceLineItems(@RequestParam long inventoryId, @RequestParam long invoiceId, @RequestParam long ledgerId, @RequestParam double quantity) {
+        InvoiceLineItemsResponse invoiceLineItemsResponse = invoiceLineItemService.createInvoiceLineItems(inventoryId, invoiceId, ledgerId, quantity);
         return ResponseBuilder.success(HttpStatus.CREATED, "Item Added Successfully", invoiceLineItemsResponse);
     }
 

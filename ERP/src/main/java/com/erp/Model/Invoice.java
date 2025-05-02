@@ -5,7 +5,6 @@ import com.erp.Enum.InvoiceStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,9 +28,9 @@ public class Invoice {
     private InvoiceStatus invoiceStatus;
 
     @ManyToOne
-    private Customer customer;
+    private Ledger ledger;
 
-    @OneToMany(mappedBy = "invoice",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "invoice")
     private List<InvoiceLineItems> invoiceLineItems;
 
 }

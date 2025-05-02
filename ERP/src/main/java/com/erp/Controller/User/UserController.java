@@ -13,12 +13,14 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name= "UserAPI" , description = "Create, Get, Update, Login, ......")
+@Tag(name = "UserAPI", description = "Create, Get, Update, Login, ......")
 public class UserController {
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -54,7 +56,7 @@ public class UserController {
     @Operation(summary = "Get all Journal entries of a User")
     public ResponseEntity<ListResponseStructure<UserResponse>> getAllUsers() {
         List<UserResponse> userResponse = userService.getAllUsers();
-        return ResponseBuilder.success(HttpStatus.OK,"User Fetch successfully ",userResponse);
+        return ResponseBuilder.success(HttpStatus.OK, "User Fetch successfully ", userResponse);
     }
 
     // Delete User API

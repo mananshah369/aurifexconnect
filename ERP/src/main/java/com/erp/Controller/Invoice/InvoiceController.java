@@ -35,8 +35,8 @@ public class InvoiceController {
             responses = {
                     @ApiResponse(responseCode = "201",description = "Created Successfully")
             })
-    public ResponseEntity<ResponseStructure<InvoiceResponse>> createdInvoice(@Valid @RequestBody InvoiceRequest request , @RequestParam long customerId){
-        InvoiceResponse invoiceResponse = invoiceService.create(request,customerId);
+    public ResponseEntity<ResponseStructure<InvoiceResponse>> createdInvoice(@Valid @RequestBody InvoiceRequest request , @RequestParam long ledgerId){
+        InvoiceResponse invoiceResponse = invoiceService.create(request,ledgerId);
         return ResponseBuilder.success(HttpStatus.CREATED,"Invoice Created Successfully",invoiceResponse);
     }
 
@@ -55,29 +55,29 @@ public class InvoiceController {
         return ResponseBuilder.success(HttpStatus.OK,"Invoice Found Successfully",invoiceResponse);
     }
 
-    @GetMapping("invoice/customer")
+    @GetMapping("invoice/ledger")
     @Operation(description = """
-            The API Endpoints to Find Invoice By Customer Name
+            The API Endpoints to Find Invoice By Ledger Name
             """,
             responses = {
                     @ApiResponse(responseCode = "200",description = "Found Successfully"),
-                    @ApiResponse(responseCode = "404",description = "Invalid Customer Id",content = {
+                    @ApiResponse(responseCode = "404",description = "Invalid Ledger Id",content = {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })
-    public ResponseEntity<ListResponseStructure<InvoiceResponse>> findBycustomerName(@RequestParam String customerName){
-        List<InvoiceResponse> invoiceResponse = invoiceService.findByCustomer_Name(customerName);
+    public ResponseEntity<ListResponseStructure<InvoiceResponse>> findByLedgerName(@RequestParam String ledgerName){
+        List<InvoiceResponse> invoiceResponse = invoiceService.findByLedger_Name(ledgerName);
         return ResponseBuilder.success(HttpStatus.OK,"Invoice Found successfully",invoiceResponse);
     }
 
 
     @GetMapping("invoice")
     @Operation(description = """
-            The API Endpoints to Find Invoice By Customer Name
+            The API Endpoints to Find Invoices
             """,
             responses = {
                     @ApiResponse(responseCode = "200",description = "Found Successfully"),
-                    @ApiResponse(responseCode = "404",description = "Invalid Customer Id",content = {
+                    @ApiResponse(responseCode = "404",description = "Invoices Not Found",content = {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })

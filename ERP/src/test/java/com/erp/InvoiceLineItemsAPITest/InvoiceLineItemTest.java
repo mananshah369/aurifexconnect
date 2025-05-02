@@ -1,15 +1,15 @@
 package com.erp.InvoiceLineItemsAPITest;
 
-import com.erp.Dto.Request.CustomerRequest;
+import com.erp.Dto.Request.LedgerRequest;
 import com.erp.Dto.Request.InventoryRequest;
 import com.erp.Dto.Request.InvoiceRequest;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
 import com.erp.Exception.Invoice_Exception.InvoiceNotFoundException;
-import com.erp.Mapper.Customer.CustomerMapper;
+import com.erp.Mapper.Ledger.LedgerMapper;
 import com.erp.Mapper.Inventory.InventoryMapper;
 import com.erp.Mapper.Invoice.InvoiceMapper;
 import com.erp.Model.*;
-import com.erp.Repository.Customer.CustomerRepository;
+import com.erp.Repository.Ledger.LedgerRepository;
 import com.erp.Repository.Invoice.InvoiceRepository;
 import com.erp.Repository.Inventory.InventoryRepository;
 import com.erp.Repository.InvoiceLineItems.InvoiceLineItemsRepository;
@@ -39,8 +39,8 @@ public class InvoiceLineItemTest {
     @Autowired private InventoryRepository inventoryRepository;
     @Autowired private InvoiceRepository invoiceRepository;
     @Autowired private InvoiceLineItemsRepository invoiceLineItemsRepository;
-    @Autowired private CustomerRepository customerRepository;
-    @Autowired private CustomerMapper customerMapper;
+    @Autowired private LedgerRepository ledgerRepository;
+    @Autowired private LedgerMapper ledgerMapper;
     @Autowired private InventoryMapper inventoryMapper;
     @Autowired private InvoiceMapper invoiceMapper;
     @Autowired private ObjectMapper objectMapper;
@@ -60,15 +60,15 @@ public class InvoiceLineItemTest {
     @Order(1)
     void testSetupCustomerInventoryAndInvoice() throws Exception {
         // Create and persist Customer via API
-        CustomerRequest customerRequest = new CustomerRequest();
-        customerRequest.setName("Kalu Kaliya");
-        customerRequest.setEmail("kalu@gmail.com");
-        customerRequest.setPhone("9876543210");
-        customerRequest.setAddress("Bangalore, India");
+        LedgerRequest ledgerRequest = new LedgerRequest();
+        ledgerRequest.setName("Kalu Kaliya");
+        ledgerRequest.setEmail("kalu@gmail.com");
+        ledgerRequest.setPhone("9876543210");
+        ledgerRequest.setAddress("Bangalore, India");
 
         MvcResult customerResult = mockMvc.perform(post("/customer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerRequest)))
+                        .content(objectMapper.writeValueAsString(ledgerRequest)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -116,11 +116,6 @@ public class InvoiceLineItemTest {
     @Test
     @Order(2)
     void testCreateInvoiceLineItem() throws Exception {
-        // Fetch inventory and invoice from DB (they have been created in the previous test)
-        Inventory inventory = inventoryRepository.findById(inventoryId)
-                .orElseThrow(() -> new InventoryNotFoundException("Inventory not Found"));
-        Invoice invoice = invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new InvoiceNotFoundException("Invoice Not Found"));
         double quantity = 2.0;
 
         // Create the invoice line item via the API
@@ -131,8 +126,8 @@ public class InvoiceLineItemTest {
                         .param("quantity", String.valueOf(quantity)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.date").value("2025-04-23"))
-                .andExpect(jsonPath("$.data.itemName").value(inventory.getItemName()))
-                .andExpect(jsonPath("$.data.unitPrice").value(inventory.getItemCost()))
+                .andExpect(jsonPath("$.data.itemName").value("Test Product"))
+                .andExpect(jsonPath("$.data.unitPrice").value(100.0))
                 .andExpect(jsonPath("$.data.quantity").value(2.0))
                 .andExpect(jsonPath("$.data.totalPrice").value(200.0));
 

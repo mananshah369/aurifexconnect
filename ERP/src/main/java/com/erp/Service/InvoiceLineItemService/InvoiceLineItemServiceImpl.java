@@ -1,7 +1,7 @@
 package com.erp.Service.InvoiceLineItemService;
 
 import com.erp.Dto.Response.InvoiceLineItemsResponse;
-import com.erp.Exception.Customer.CustomerNotFoundException;
+import com.erp.Exception.Ledger.LedgerNotFoundException;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
 import com.erp.Exception.Inventory_Exception.WrongQuantityNumberException;
 import com.erp.Exception.Invoice_Exception.InsufficientStockException;
@@ -30,8 +30,8 @@ public class InvoiceLineItemServiceImpl implements InvoiceLineItemService{
     private final InvoiceLineItemsMapper invoiceLineItemsMapper;
 
     @Override
-    @Transactional(rollbackFor = { CustomerNotFoundException.class, InvoiceNotFoundException.class, InsufficientStockException.class })
-    public InvoiceLineItemsResponse createInvoiceLineItems(long inventoryId, long invoiceId, long customerId , double quantity) {
+    @Transactional(rollbackFor = { LedgerNotFoundException.class, InvoiceNotFoundException.class, InsufficientStockException.class })
+    public InvoiceLineItemsResponse createInvoiceLineItems(long inventoryId, long invoiceId, long ledgerId , double quantity) {
 
         if (quantity <= 0 || quantity % 1 != 0) {
             throw new WrongQuantityNumberException("Quantity must be a positive whole number (e.g., 1, 2, 5)");
@@ -41,9 +41,9 @@ public class InvoiceLineItemServiceImpl implements InvoiceLineItemService{
                 .orElseThrow(() -> new InvoiceNotFoundException("Invoice not found , Invalid Invoice Id"));
 
 
-        Long invoiceCustomerId = invoice.getCustomer().getCustomerId();
-        if (invoiceCustomerId == null || invoiceCustomerId.longValue() != customerId) {
-            throw new CustomerNotFoundException("This invoice does not belong to the customer.");
+        Long invoiceCustomerId = invoice.getLedger().getLedgerId();
+        if (invoiceCustomerId == null || invoiceCustomerId.longValue() != ledgerId) {
+            throw new LedgerNotFoundException("This invoice does not belong to the customer.");
         }
 
         Inventory inventory = inventoryRepository.findById(inventoryId)
