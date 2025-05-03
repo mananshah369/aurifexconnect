@@ -1,5 +1,6 @@
 package com.erp.Dto.Request;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +15,8 @@ public class InventoryRequest {
     @NotBlank(message="Please Enter Value")
     private String itemName;
 
-    private String itemQuantity;
+    @DecimalMin(value = "1.0", inclusive = true, message = "Quantity must be at least 1")
+    private double itemQuantity;
     private String itemDescription;
     private double itemCost;
 

@@ -55,4 +55,6 @@ public interface InventoryService {
      * @return List<InventoryResponse> A list of matching items, or an empty list if none found.
      */
     List<InventoryResponse> findByItemName(String itemName);
+
+    List<InventoryResponse> findByAll();
 }

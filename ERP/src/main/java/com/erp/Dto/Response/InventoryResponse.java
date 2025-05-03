@@ -14,7 +14,7 @@ public class InventoryResponse {
     private long itemId;
 
     private String itemName;
-    private String itemQuantity;
+    private double itemQuantity;
     private String itemDescription;
     private double itemCost;
 
