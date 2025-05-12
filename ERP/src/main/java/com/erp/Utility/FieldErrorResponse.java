@@ -14,10 +14,10 @@ public class FieldErrorResponse extends SimpleErrorResponse{
     private List<CustomFieldError> errors;
 
 
-    public static CustomFieldError createfieldError(String message, Object rejectedvalue, String filed){
+    public static CustomFieldError createFieldError(String message, Object rejectedValue, String filed){
         CustomFieldError error = new CustomFieldError();
         error.message = message;
-        error.rejectedValue = rejectedvalue;
+        error.rejectedValue = rejectedValue;
         error.field = filed;
 
         return error;

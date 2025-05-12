@@ -1,16 +1,27 @@
 package com.erp.Dto.Response;
 
-import com.erp.Enum.Role;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class UserResponse {
 
-    private Long id;
-    private String username;
+    private long userId;
+
+    private String firstName;
+
+    private String lastName;
+
     private String email;
+
+    private long phoneNo;
+
     private String password;
-    private Role role;
+
+    private LocalDate createdAt;
+
+    private LocalDate lastModifiedAt;
 }
