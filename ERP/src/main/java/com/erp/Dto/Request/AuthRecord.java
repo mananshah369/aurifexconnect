@@ -1,12 +1,15 @@
-package com.example.dio.dto.request;
+package com.erp.Dto.Request;
 
-import com.example.dio.enums.UserRole;
+import com.erp.Enum.UserType;
+
+
+import java.util.Set;
 
 public record AuthRecord(
-        long userId,
-        String userName,
+        long id,
         String email,
-        UserRole role,
+        UserType userType,
+        boolean isActive,
         long accessExpiration,
         long refreshExpiration
 ) {

@@ -6,9 +6,9 @@ import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FilterHelpers {
+public class FilterHelper {
 
-    public static String extractTokenForCookie(Cookie[] cookies, TokenType tokenType){
+    public static String extractTokenFromCookie(Cookie[] cookies, TokenType tokenType){
 
         String token = null;
         if(cookies!=null){

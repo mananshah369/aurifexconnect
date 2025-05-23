@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 @AllArgsConstructor
-public class TokenGenerationHelper {
+public class TokenGenerationServiceHelper {
 
     private final AppEnv env;
     private final JWTService jwtService;

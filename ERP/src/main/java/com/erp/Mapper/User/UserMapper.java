@@ -1,4 +1,4 @@
-package com.erp.Mapper;
+package com.erp.Mapper.User;
 
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Response.UserResponse;

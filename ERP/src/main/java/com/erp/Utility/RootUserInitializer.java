@@ -1,6 +1,7 @@
-package com.erp.RootUser;
+package com.erp.Utility;
 
-import lombok.AllArgsConstructor;
+import com.erp.Model.RootUser;
+import com.erp.Repository.Rootuser.RootUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class RootUserInitializer implements CommandLineRunner {
 
     @Autowired
-    private  RootUserRepository rootUserRepository;
+    private RootUserRepository rootUserRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

@@ -1,4 +1,4 @@
-package com.erp.Mapper;
+package com.erp.Mapper.Admin;
 
 import com.erp.Dto.Request.AdminRequest;
 import com.erp.Dto.Response.AdminResponse;

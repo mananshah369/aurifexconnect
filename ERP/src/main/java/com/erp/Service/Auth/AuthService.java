@@ -3,7 +3,9 @@ package com.erp.Service.Auth;
 import com.erp.Dto.Request.AuthRecord;
 import com.erp.Dto.Request.LoginRequest;
 
-public interface LoginService {
+public interface AuthService {
 
-    AuthRecord login(LoginRequest request);
+    AuthRecord login(LoginRequest loginRequest);
+
+    AuthRecord refreshLogin(String refreshToken);
 }

@@ -1,4 +1,74 @@
 package com.erp.Security.Filter;
 
-public class RefreshAuthFilter {
+import com.erp.Security.JWT.ClaimName;
+import com.erp.Security.JWT.JWTService;
+import com.erp.Security.JWT.TokenType;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.springframework.boot.context.properties.source.ConfigurationPropertyName.isValid;
+
+@Slf4j
+@AllArgsConstructor
+public class RefreshAuthFilter extends OncePerRequestFilter {
+
+    private final JWTService jwtService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("Validating request, finding token: {}", TokenType.REFRESH.type());
+
+        // Extract token from cookies
+        Cookie[] cookies = request.getCookies();
+        String token = cookies != null ? FilterHelper.extractTokenFromCookie(cookies, TokenType.REFRESH) : null;
+
+        if (token != null) {
+            log.info("Token found with name: {}", TokenType.REFRESH.type());
+            Claims claims = jwtService.parseToken(token);
+
+            String email = claims.get(ClaimName.USER_EMAIL, String.class);
+            String userType = claims.get("user_type", String.class);
+
+            if (isValid(email) && isValid(userType)) {
+                log.info("Claims: {} & user_type extracted successfully", ClaimName.USER_EMAIL);
+
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    // Create authorities list with only userType as authority
+                    List<SimpleGrantedAuthority> authorities = List.of(
+                            new SimpleGrantedAuthority(userType.toUpperCase())
+                    );
+
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            authorities
+                    );
+
+                    authToken.setDetails(request);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    log.info("Request Authentication Successfully!!");
+                }
+            } else {
+                log.error("Invalid claims: {} & user_type", ClaimName.USER_EMAIL);
+            }
+        } else {
+            log.warn("Token not found with name: {}", TokenType.REFRESH.type());
+        }
+
+        filterChain.doFilter(request, response);
+    }
 }
