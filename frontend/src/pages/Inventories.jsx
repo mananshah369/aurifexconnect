@@ -8,13 +8,70 @@ import {
   FiChevronDown,
   FiSearch,
 } from "react-icons/fi";
-import { format } from "date-fns";
+// import { it } from "date-fns/locale";
 
-function Transactions() {
+function Inventories() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [inventories] = useState([
+    {
+      id: 1,
+      name: "Laptop",
+      price: "₹85,000",
+      quantity: 2,
+      branch: "Bangalore",
+    },
+    {
+      id: 2,
+      name: "Smartphone",
+      price: "₹25,999",
+      quantity: 5,
+      branch: "Delhi",
+    },
+    {
+      id: 3,
+      name: "Headphones",
+      price: "₹2,499",
+      quantity: 10,
+      branch: "Mumbai",
+    },
+    {
+      id: 4,
+      name: "Office Chair",
+      price: "₹7,899",
+      quantity: 4,
+      branch: "Pune",
+    },
+    {
+      id: 5,
+      name: "Monitor",
+      price: "₹12,750",
+      quantity: 3,
+      branch: "Hyderabad",
+    },
+  ]);
+
+  const filteredInventories = inventories.filter((item) => {
+    const matchesName = item.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const matchesId = selectedId === "" || item.id === parseInt(selectedId);
+
+    const matchesNames = selectedName === "" || item.name === selectedName;
+
+    const matchesBranch =
+      selectedBranch === "" || item.branch === selectedBranch;
+
+    return matchesName && matchesId && matchesNames && matchesBranch;
+  });
+
   const { transactions, categories, accounts, addTransaction } =
     useAppContext();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  //   const [searchTerm, setSearchTerm] = useState("");
 
   // Filter states
   const [typeFilter, setTypeFilter] = useState("all");
@@ -23,7 +80,7 @@ function Transactions() {
   const [dateFilter, setDateFilter] = useState("all");
 
   // Apply filters
-  const filteredTransactions = transactions.filter((transaction) => {
+  const inventoriesTransactions = transactions.filter((transaction) => {
     // Search term
     if (
       searchTerm &&
@@ -76,35 +133,25 @@ function Transactions() {
   // Add new transaction modal state
   const [showAddModal, setShowAddModal] = useState(false);
   const [newTransaction, setNewTransaction] = useState({
-    description: "",
-    amount: "",
-    type: "expense",
-    category: "",
-    account: "",
+    Name: "",
+    Price: "",
   });
 
   const handleAddTransaction = () => {
+    console.log("Hemang");
     try {
       //setShowAddModal(true);
       console.log("Transaction added:");
-      if (
-        newTransaction.description &&
-        newTransaction.amount &&
-        newTransaction.category &&
-        newTransaction.account
-      ) {
+      if (newTransaction.name && newTransaction.price) {
         addTransaction({
           ...newTransaction,
-          amount: parseFloat(newTransaction.amount),
+          price: parseFloat(newTransaction.price),
           status: "completed",
         });
 
         setNewTransaction({
-          description: "",
-          amount: "",
-          type: "expense",
-          category: "",
-          account: "",
+          name: "",
+          price: "",
         });
       } else {
         alert("Please fill in all fields.");
@@ -121,6 +168,7 @@ function Transactions() {
 
   console.log("Hi");
   console.log(showAddModal);
+
   return (
     <motion.div
       variants={pageVariants}
@@ -128,11 +176,11 @@ function Transactions() {
       animate="animate"
       transition={{ duration: 0.5 }}
     >
-      {/* //Header above Table */}
+      {/* Headers Above Table */}
       <div className="md:flex md:items-center md:justify-between mb-6">
         <div className="flex-1 min-w-0">
           <h1 className="text-2xl font-bold leading-7 text-neutral-900 sm:text-3xl sm:leading-9 sm:truncate">
-            Transactions
+            Inventories
           </h1>
         </div>
         <div className="mt-4 flex md:mt-0 md:ml-4">
@@ -157,7 +205,7 @@ function Transactions() {
             onClick={() => setShowAddModal(true)}
           >
             <FiPlusCircle className="mr-2 h-4 w-4" />
-            Add Transaction
+            Add Item
           </button>
         </div>
       </div>
@@ -171,7 +219,7 @@ function Transactions() {
           <input
             type="text"
             className="input pl-10"
-            placeholder="Search transactions..."
+            placeholder="Search Inventories..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -185,55 +233,56 @@ function Transactions() {
           >
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Type
+                Id
               </label>
               <select
                 className="input"
                 value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
+                onChange={(e) => setSelectedId(e.target.value)}
               >
-                <option value="all">All Types</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                <option value="">All</option>
+                {inventories.map((item) => (
+                  <option key={item.id}>{item.id}</option>
+                ))}
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Category
+                Name
               </label>
               <select
                 className="input"
                 value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
+                onChange={(e) => setSelectedName(e.target.value)}
               >
-                <option value="all">All Categories</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.name.toLowerCase()}>
-                    {category.name}
+                <option value="all">All Name</option>
+                {inventories.map((item) => (
+                  <option key={item.name} value={item.name}>
+                    {item.name}
                   </option>
                 ))}
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Account
+                Branch
               </label>
               <select
                 className="input"
                 value={accountFilter}
-                onChange={(e) => setAccountFilter(e.target.value)}
+                onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="all">All Accounts</option>
-                {accounts.map((account) => (
-                  <option key={account.id} value={account.name}>
-                    {account.name}
+                <option value="all">All Name</option>
+                {inventories.map((item) => (
+                  <option key={item.branch} value={item.branch}>
+                    {item.branch}
                   </option>
                 ))}
               </select>
             </div>
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Date
+                Quantity
               </label>
               <select
                 className="input"
@@ -245,7 +294,7 @@ function Transactions() {
                 <option value="week">Last 7 Days</option>
                 <option value="month">Last 30 Days</option>
               </select>
-            </div>
+            </div> */}
           </motion.div>
         )}
       </div>
@@ -257,66 +306,43 @@ function Transactions() {
             <thead className="bg-neutral-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Date
+                  ID
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Description
+                  NAME
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Category
+                  PRICE
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Account
+                  Quantity
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Status
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Branch
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-neutral-200">
-              {filteredTransactions.map((transaction) => (
+              {filteredInventories.map((transaction) => (
                 <motion.tr
                   key={transaction.id}
                   whileHover={{ backgroundColor: "#f9fafb" }}
                   className="cursor-pointer"
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
-                    {format(new Date(transaction.date), "MMM dd, yyyy")}
+                    {transaction.id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-neutral-900">
-                    {transaction.description}
+                    {transaction.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 capitalize">
-                    {transaction.category}
+                    {transaction.price}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
-                    {transaction.account}
+                    {transaction.quantity}
                   </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap text-sm font-medium text-right ${
-                      transaction.type === "income"
-                        ? "text-success-600"
-                        : "text-error-600"
-                    }`}
-                  >
-                    {transaction.type === "income" ? "+" : "-"}₹
-                    {transaction.amount.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <span
-                      className={`badge ${
-                        transaction.status === "completed"
-                          ? "badge-success"
-                          : transaction.status === "pending"
-                          ? "badge-warning"
-                          : "bg-neutral-100 text-neutral-800"
-                      }`}
-                    >
-                      {transaction.status}
-                    </span>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+                    {transaction.branch}
                   </td>
                 </motion.tr>
               ))}
@@ -337,54 +363,55 @@ function Transactions() {
             </div>
 
             <motion.div
-              // initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              // animate={{ opacity: 1, scale: 1, y: 0 }}
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full z-[9999]"
+              initial={{ opacity: 1, scale: 0.95, y: 20 }}
+              //   animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
             >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                     <h3 className="text-lg leading-6 font-medium text-neutral-900 mb-4">
-                      Add New Transaction
+                      Add New Item
                     </h3>
 
                     <div className="mt-4 space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Description
+                          Name
                         </label>
                         <input
                           type="text"
                           className="input"
-                          value={newTransaction.description}
-                          onChange={(e) =>
-                            setNewTransaction({
-                              ...newTransaction,
-                              description: e.target.value,
-                            })
-                          }
+                          //   value={newTransaction.Name}
+                          //   onChange={(e) =>
+                          //     setNewTransaction({
+                          //       ...newTransaction,
+                          //       name: e.target.value,
+                          //     })
+                          //   }
+                          onChange={(e) => e.target.value}
                         />
                       </div>
 
                       <div>
                         <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Amount
+                          Price
                         </label>
                         <input
                           type="number"
                           step="0.01"
                           className="input"
-                          value={newTransaction.amount}
+                          value={newTransaction.Price}
                           onChange={(e) =>
                             setNewTransaction({
                               ...newTransaction,
-                              amount: e.target.value,
+                              price: e.target.value,
                             })
                           }
                         />
                       </div>
 
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-medium text-neutral-700 mb-1">
                           Type
                         </label>
@@ -426,9 +453,9 @@ function Transactions() {
                             </span>
                           </label>
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-medium text-neutral-700 mb-1">
                           Category
                         </label>
@@ -454,9 +481,9 @@ function Transactions() {
                               </option>
                             ))}
                         </select>
-                      </div>
+                      </div> */}
 
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-medium text-neutral-700 mb-1">
                           Account
                         </label>
@@ -477,7 +504,7 @@ function Transactions() {
                             </option>
                           ))}
                         </select>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -488,8 +515,9 @@ function Transactions() {
                   type="button"
                   className="btn btn-primary w-full sm:w-auto sm:ml-3"
                   onClick={handleAddTransaction}
+                  //   onClick={console.log("Hemang")}
                 >
-                  Add Transaction
+                  Add Item
                 </button>
                 <button
                   type="button"
@@ -507,4 +535,4 @@ function Transactions() {
   );
 }
 
-export default Transactions;
+export default Inventories;
