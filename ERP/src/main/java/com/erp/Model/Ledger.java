@@ -25,8 +25,6 @@ public class Ledger {
     private String phone;
     private String address;
 
-//    private String contactPerson;
-
     @CreatedDate
     private LocalDateTime created_at;
 
@@ -34,9 +32,6 @@ public class Ledger {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "ledger")
-    private List<Invoice> invoices;
-
-    @OneToMany(mappedBy = "ledger")
-    private List<Bills> bills;
+    private List<Master> masters;
 
 }

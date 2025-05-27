@@ -33,6 +33,7 @@ public class Inventory {
     private LocalDateTime lastModifiedAt;
 
     @OneToMany(mappedBy = "inventory")
-    private List<InvoiceLineItems> invoiceLineItem;
+    private List<LineItems> lineItems;
+
 
 }
