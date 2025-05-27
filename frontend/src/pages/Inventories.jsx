@@ -11,6 +11,11 @@ import {
 // import { it } from "date-fns/locale";
 
 function Inventories() {
+  ///////Modal States
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+
+  ////////////Filters States
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
@@ -67,6 +72,15 @@ function Inventories() {
 
     return matchesName && matchesId && matchesNames && matchesBranch;
   });
+
+  //////////////////// Modal Functionality////////////////////////
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted", { name, price });
+  };
+
+  ////////////////////Other Functionality////////////////////////
 
   const { transactions, categories, accounts, addTransaction } =
     useAppContext();
@@ -137,37 +151,37 @@ function Inventories() {
     Price: "",
   });
 
-  const handleAddTransaction = () => {
-    console.log("Hemang");
-    try {
-      //setShowAddModal(true);
-      console.log("Transaction added:");
-      if (newTransaction.name && newTransaction.price) {
-        addTransaction({
-          ...newTransaction,
-          price: parseFloat(newTransaction.price),
-          status: "completed",
-        });
+  // const handleAddTransaction = () => {
+  //   console.log("Hemang");
+  //   try {
+  //     //setShowAddModal(true);
+  //     console.log("Transaction added:");
+  //     if (newTransaction.name && newTransaction.price) {
+  //       addTransaction({
+  //         ...newTransaction,
+  //         price: parseFloat(newTransaction.price),
+  //         status: "completed",
+  //       });
 
-        setNewTransaction({
-          name: "",
-          price: "",
-        });
-      } else {
-        alert("Please fill in all fields.");
-      }
-    } catch (err) {
-      console.error("Add Transaction Error:", err);
-    }
-  };
+  //       setNewTransaction({
+  //         name: "",
+  //         price: "",
+  //       });
+  //     } else {
+  //       alert("Please fill in all fields.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Add Transaction Error:", err);
+  //   }
+  // };
 
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
   };
 
-  console.log("Hi");
-  console.log(showAddModal);
+  // console.log("Hi");
+  // console.log(showAddModal);
 
   return (
     <motion.div
@@ -237,7 +251,7 @@ function Inventories() {
               </label>
               <select
                 className="input"
-                value={typeFilter}
+                value={selectedId}
                 onChange={(e) => setSelectedId(e.target.value)}
               >
                 <option value="">All</option>
@@ -252,7 +266,7 @@ function Inventories() {
               </label>
               <select
                 className="input"
-                value={categoryFilter}
+                value={selectedName}
                 onChange={(e) => setSelectedName(e.target.value)}
               >
                 <option value="all">All Name</option>
@@ -269,7 +283,7 @@ function Inventories() {
               </label>
               <select
                 className="input"
-                value={accountFilter}
+                value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
                 <option value="all">All Name</option>
@@ -353,183 +367,79 @@ function Inventories() {
 
       {/* Add Transaction Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
-              className="fixed inset-0 transition-opacity"
-              aria-hidden="true"
-            >
-              <div className="absolute inset-0 bg-neutral-500 opacity-75"></div>
-            </div>
+        <form onSubmit={handleSubmit}>
+          <div className="fixed inset-0 z-50 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div
+                className="fixed inset-0 transition-opacity"
+                aria-hidden="true"
+              >
+                <div className="absolute inset-0 bg-neutral-500 opacity-75"></div>
+              </div>
 
-            <motion.div
-              initial={{ opacity: 1, scale: 0.95, y: 20 }}
-              //   animate={{ opacity: 1, scale: 1, y: 0 }}
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                    <h3 className="text-lg leading-6 font-medium text-neutral-900 mb-4">
-                      Add New Item
-                    </h3>
+              <motion.div
+                initial={{ opacity: 1, scale: 0.95, y: 20 }}
+                //   animate={{ opacity: 1, scale: 1, y: 0 }}
+                className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              >
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                      <h3 className="text-lg leading-6 font-medium text-neutral-900 mb-4">
+                        Add New Item
+                      </h3>
 
-                    <div className="mt-4 space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          className="input"
-                          //   value={newTransaction.Name}
-                          //   onChange={(e) =>
-                          //     setNewTransaction({
-                          //       ...newTransaction,
-                          //       name: e.target.value,
-                          //     })
-                          //   }
-                          onChange={(e) => e.target.value}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Price
-                        </label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          className="input"
-                          value={newTransaction.Price}
-                          onChange={(e) =>
-                            setNewTransaction({
-                              ...newTransaction,
-                              price: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-
-                      {/* <div>
-                        <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Type
-                        </label>
-                        <div className="flex space-x-4">
-                          <label className="inline-flex items-center">
-                            <input
-                              type="radio"
-                              className="form-radio text-primary-600"
-                              name="transactionType"
-                              value="expense"
-                              checked={newTransaction.type === "expense"}
-                              onChange={() =>
-                                setNewTransaction({
-                                  ...newTransaction,
-                                  type: "expense",
-                                })
-                              }
-                            />
-                            <span className="ml-2 text-sm text-neutral-700">
-                              Expense
-                            </span>
+                      <div className="mt-4 space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-neutral-700 mb-1">
+                            Name
                           </label>
-                          <label className="inline-flex items-center">
-                            <input
-                              type="radio"
-                              className="form-radio text-primary-600"
-                              name="transactionType"
-                              value="income"
-                              checked={newTransaction.type === "income"}
-                              onChange={() =>
-                                setNewTransaction({
-                                  ...newTransaction,
-                                  type: "income",
-                                })
-                              }
-                            />
-                            <span className="ml-2 text-sm text-neutral-700">
-                              Income
-                            </span>
-                          </label>
+                          <input
+                            type="text"
+                            className="input"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
                         </div>
-                      </div> */}
 
-                      {/* <div>
-                        <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Category
-                        </label>
-                        <select
-                          className="input"
-                          value={newTransaction.category}
-                          onChange={(e) =>
-                            setNewTransaction({
-                              ...newTransaction,
-                              category: e.target.value,
-                            })
-                          }
-                        >
-                          <option value="">Select a category</option>
-                          {categories
-                            .filter((cat) => cat.type === newTransaction.type)
-                            .map((category) => (
-                              <option
-                                key={category.id}
-                                value={category.name.toLowerCase()}
-                              >
-                                {category.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div> */}
-
-                      {/* <div>
-                        <label className="block text-sm font-medium text-neutral-700 mb-1">
-                          Account
-                        </label>
-                        <select
-                          className="input"
-                          value={newTransaction.account}
-                          onChange={(e) =>
-                            setNewTransaction({
-                              ...newTransaction,
-                              account: e.target.value,
-                            })
-                          }
-                        >
-                          <option value="">Select an account</option>
-                          {accounts.map((account) => (
-                            <option key={account.id} value={account.name}>
-                              {account.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div> */}
+                        <div>
+                          <label className="block text-sm font-medium text-neutral-700 mb-1">
+                            Price
+                          </label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            className="input"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-neutral-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  className="btn btn-primary w-full sm:w-auto sm:ml-3"
-                  onClick={handleAddTransaction}
-                  //   onClick={console.log("Hemang")}
-                >
-                  Add Item
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary w-full sm:w-auto mt-3 sm:mt-0"
-                  onClick={() => setShowAddModal(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </motion.div>
+                <div className="bg-neutral-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-full sm:w-auto sm:ml-3"
+                    // onClick={handleAddTransaction}
+                    //   onClick={console.log("Hemang")}
+                  >
+                    Add Item
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary w-full sm:w-auto mt-3 sm:mt-0"
+                    onClick={() => setShowAddModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </motion.div>
+            </div>
           </div>
-        </div>
+        </form>
       )}
     </motion.div>
   );

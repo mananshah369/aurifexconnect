@@ -9,6 +9,7 @@ import Invoices from "./pages/Invoices";
 import Inventories from "./pages/Inventories";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+// import Login from "./pages/Login";
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+
+      {/* <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes> */}
     </AnimatePresence>
   );
 }
