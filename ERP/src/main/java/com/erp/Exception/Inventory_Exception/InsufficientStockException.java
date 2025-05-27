@@ -1,4 +1,4 @@
-package com.erp.Exception.Invoice_Exception;
+package com.erp.Exception.Inventory_Exception;
 
 import lombok.Getter;
 

@@ -2,8 +2,7 @@ package com.erp.Service.LineItems;
 
 import com.erp.Dto.Response.LineItemsResponse;
 import com.erp.Enum.VoucherType;
-import com.erp.Exception.Invoice_Exception.InsufficientStockException;
-import com.erp.Exception.Invoice_Exception.InvoiceNotFoundException;
+import com.erp.Exception.Inventory_Exception.InsufficientStockException;
 import com.erp.Exception.Ledger.LedgerNotFoundException;
 import com.erp.Exception.Master.MasterNotFoundException;
 import com.erp.Exception.Voucher.VoucherNotFound;
@@ -32,7 +31,7 @@ public class LineItemsServiceImpl implements LineItemService {
     public LineItemsResponse createLineItems(long itemId, long masterId, long ledgerId, double quantity) {
 
         Inventory inventory = inventoryRepository.findById(itemId)
-                .orElseThrow(() -> new InvoiceNotFoundException("Invalid Item ID: " + itemId));
+                .orElseThrow(() -> new MasterNotFoundException("Invalid Item ID: " + itemId));
 
         Master master = masterRepository.findById(masterId)
                 .orElseThrow(() -> new MasterNotFoundException("Invalid Master ID: " + masterId));

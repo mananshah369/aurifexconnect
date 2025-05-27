@@ -8,7 +8,6 @@ import com.erp.Enum.TransactionStatus;
 import com.erp.Enum.VoucherType;
 import com.erp.Exception.BankAccount.BankAccountNotFoundException;
 import com.erp.Exception.BankAccount.InactiveBankAccountException;
-import com.erp.Exception.Invoice_Exception.InvoiceNotFoundException;
 import com.erp.Exception.Ledger.LedgerNotFoundException;
 import com.erp.Exception.Master.MasterNotFoundException;
 import com.erp.Exception.Voucher.VoucherNotFound;
@@ -127,7 +126,7 @@ public class MasterServiceImpl implements MasterService{
         }
 
         Master invoice = masterRepository.findById(masterRequest.getInvoiceId())
-                .orElseThrow(() -> new InvoiceNotFoundException("Invoice not found with id: " + masterRequest.getInvoiceId()));
+                .orElseThrow(() -> new MasterNotFoundException("Invoice not found with id: " + masterRequest.getInvoiceId()));
 
         if (invoice.getVoucherType() != VoucherType.SALES) {
             throw new VoucherNotFound("Provided related ID is not of type SALES");
@@ -167,7 +166,7 @@ public class MasterServiceImpl implements MasterService{
         }
 
         Master bill = masterRepository.findById(masterRequest.getBillId())  // assuming you renamed invoiceId to billId in DTO
-                .orElseThrow(() -> new InvoiceNotFoundException("Bill not found with id: " + masterRequest.getBillId()));
+                .orElseThrow(() -> new MasterNotFoundException("Bill not found with id: " + masterRequest.getBillId()));
 
         if (bill.getVoucherType() != VoucherType.PURCHASE) {
             throw new VoucherNotFound("Provided related ID is not of type PURCHASE");

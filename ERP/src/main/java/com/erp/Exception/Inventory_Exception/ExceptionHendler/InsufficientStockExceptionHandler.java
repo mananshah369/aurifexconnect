@@ -1,6 +1,6 @@
-package com.erp.Exception.Invoice_Exception.ExceptionHandler;
+package com.erp.Exception.Inventory_Exception.ExceptionHendler;
 
-import com.erp.Exception.Invoice_Exception.InsufficientStockException;
+import com.erp.Exception.Inventory_Exception.InsufficientStockException;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.SimpleErrorResponse;
 import org.springframework.http.HttpStatus;
