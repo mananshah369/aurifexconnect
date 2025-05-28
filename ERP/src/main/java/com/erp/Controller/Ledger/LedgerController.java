@@ -33,7 +33,7 @@ public class LedgerController {
     )
     public ResponseEntity<ResponseStructure<LedgerResponse>> createLedger(@Valid @RequestBody LedgerRequest ledgerRequest){
         LedgerResponse ledgerResponse = ledgerService.createLedger(ledgerRequest);
-        return ResponseBuilder.success(HttpStatus.CREATED,"Customer Created", ledgerResponse);
+        return ResponseBuilder.success(HttpStatus.CREATED,"Ledger Created", ledgerResponse);
     }
 
     @Operation(
@@ -47,7 +47,7 @@ public class LedgerController {
     @PutMapping("ledger/{id}")
     public ResponseEntity<ResponseStructure<LedgerResponse>> updateLedgerInfo(@RequestBody LedgerRequest ledgerRequest, @PathVariable long id){
         LedgerResponse ledgerResponse = ledgerService.updateLedgerInfo(ledgerRequest, id);
-        return ResponseBuilder.success(HttpStatus.OK,"Customer Info Updated Successfully", ledgerResponse);
+        return ResponseBuilder.success(HttpStatus.OK,"Ledger Info Updated Successfully", ledgerResponse);
     }
 
     @Operation(
