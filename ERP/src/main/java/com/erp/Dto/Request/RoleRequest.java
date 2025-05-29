@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Setter
 @Getter
 public class RoleRequest {
@@ -11,17 +13,17 @@ public class RoleRequest {
     @NotBlank
     private String roleName;
 
-    //
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RoleRequest)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         RoleRequest that = (RoleRequest) o;
-        return roleName != null && roleName.equalsIgnoreCase(that.roleName);
+        return Objects.equals(roleName, that.roleName);
     }
 
     @Override
     public int hashCode() {
-        return roleName == null ? 0 : roleName.toLowerCase().hashCode();
+        return Objects.hash(roleName);
     }
+
 }

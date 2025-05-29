@@ -7,19 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FilterHelper {
-
-    public static String extractTokenFromCookie(Cookie[] cookies, TokenType tokenType){
-
-        String token = null;
-        if(cookies!=null){
-            for(Cookie cookie : cookies){
-                log.info("Found cookie with name: {} & value: {}", cookie.getName(), cookie.getValue());
-                if(cookie.getName().equals(tokenType.type())){
-                    token = cookie.getValue();
-                    break;
+        public static String extractTokenFromCookie(Cookie[] cookies, TokenType tokenType) {
+            String token = null;
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    log.info("Found cookie with name: {} & value: {}", cookie.getName(), cookie.getValue());
+                    if (cookie.getName().equals(tokenType.type())) {
+                        token = cookie.getValue();
+                        break;
+                    }
                 }
             }
+            return token;
         }
-        return token;
     }
-}

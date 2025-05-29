@@ -2,7 +2,6 @@ package com.erp.Dto.Request;
 
 
 
-import com.erp.Enum.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

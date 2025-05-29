@@ -1,47 +1,51 @@
 package com.erp.Dto.Request;
 
+import com.erp.Dto.Constraints.ContactNumber;
+import com.erp.Dto.Constraints.Name;
+import com.erp.Dto.Constraints.Password;
+import com.erp.Dto.Request.RoleRequest;
 
-import com.erp.Model.Role;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
 public class UserRequest {
 
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,50}$", message = "First name must be 3-50 alphabetic characters")
+    @Name
     private String firstName;
 
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,50}$", message = "Last name must be 2-50 alphabetic characters")
+    @Name
     private String lastName;
 
-    @NotBlank
-    @Email(message = "Invalid email format")
-    @Pattern(
-            regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$",
-            message = "Email must be a valid format like user@example.com"
-    )
+    @Email
     private String email;
 
-    @Pattern(
-            regexp = "^[6-9]\\d{9}$",
-            message = "Phone number must be a valid 10-digit Indian number starting with 6-9"
-    )
+    @ContactNumber
     private long phoneNo;
 
-    @NotBlank
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must have 8+ characters, with uppercase, lowercase, number, and special character"
-    )
+    @Password
     private String password;
 
     @NotEmpty(message = "Roles cannot be empty")
     @Size(min = 1, message = "User must have at least one role")
-    private Set<Role> roles;
+    private Set<RoleRequest> roles = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRequest that = (UserRequest) o;
+        return Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
 }

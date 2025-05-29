@@ -51,7 +51,6 @@ public class TokenGenerationService {
         return Map.of(
                 ClaimName.USER_ID, authRecord.id(),
                 ClaimName.USER_EMAIL, authRecord.email(),
-                ClaimName.USER_TYPE, authRecord.userType().name(),
                 ClaimName.IS_ACTIVE, authRecord.isActive()
         );
     }

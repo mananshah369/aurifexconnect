@@ -4,27 +4,29 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-
+public class User implements GenericUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "user_id")
-    private long userId;
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -41,6 +43,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "is_active")
+    private boolean isActive = true;
+
     @CreatedDate
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -53,5 +58,42 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
+                .collect(Collectors.toList());
+        System.out.println("Authorities: " + authorities); // Debug
+        return authorities;
+    }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return GenericUser.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return GenericUser.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return GenericUser.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return GenericUser.super.isEnabled();
+    }
 }

@@ -21,15 +21,15 @@ public class TokenGenerationServiceHelper {
     private final CookieManager cookieManager;
 
 
-        public String generateToken(TokenType tokenType, Map<String, Object> claim, Instant shouldExpireAt){
-            TokenPayload tokenPayload = generateTokenPayload(tokenType,claim,shouldExpireAt);
+    public String generateToken(TokenType tokenType, Map<String, Object> claim, Instant shouldExpireAt){
+        TokenPayload tokenPayload = generateTokenPayload(tokenType,claim,shouldExpireAt);
 
-            String token =jwtService.generateToken(tokenPayload);
+        String token =jwtService.generateToken(tokenPayload);
 
-            long maxAge = Duration.between(Instant.now(),shouldExpireAt).getSeconds();
+        long maxAge = Duration.between(Instant.now(),shouldExpireAt).getSeconds();
 
-            return cookieManager.generateCookie(tokenType.type(),token, maxAge);
-        }
+        return cookieManager.generateCookie(tokenType.type(),token, maxAge);
+    }
 
 
     private TokenPayload generateTokenPayload(TokenType type, Map<String, Object> claim, Instant shouldExpireAt) {

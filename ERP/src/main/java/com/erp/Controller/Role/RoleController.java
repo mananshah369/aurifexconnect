@@ -6,30 +6,36 @@ import com.erp.Dto.Response.RoleResponse;
 import com.erp.Service.Role.RoleServices;
 import com.erp.Utility.ListResponseStructure;
 import com.erp.Utility.ResponseBuilder;
-import com.erp.Utility.ResponseStructure;
-import com.erp.Utility.SetResponseStructure;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1")
+@RequestMapping("${app.base-url}")
 public class RoleController {
 
-    private final RoleServices roleServices;
+    private final RoleServices roleService;
 
-    @PostMapping("/user/roles")
-    public ResponseEntity<SetResponseStructure<RoleResponse>> createListOfRoles (@RequestBody @Valid Set<RoleRequest> roleSetRequest){
-        Set<RoleResponse> roleResponses = roleServices.createListOfRoles(roleSetRequest);
-        return ResponseBuilder.success(HttpStatus.CREATED,"Created",roleResponses);
+    @PostMapping("/roles")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')")
+    public ResponseEntity<ListResponseStructure<RoleResponse>> createRoles(@RequestBody @Valid RoleListRequest roleListRequest) {
+        List<RoleResponse> roleResponses = roleService.createRoles(roleListRequest);
+        return ResponseBuilder.success(HttpStatus.CREATED, "Roles created or retrieved successfully", roleResponses);
     }
+
+    @GetMapping("/roles")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')")
+    public ResponseEntity<ListResponseStructure<RoleResponse>> getAllRoles() {
+        List<RoleResponse> roleResponses = roleService.getAllRoles();
+        return ResponseBuilder.success(HttpStatus.CREATED, "Roles created or retrieved successfully", roleResponses);
+    }
+
+
+
 }

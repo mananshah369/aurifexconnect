@@ -1,6 +1,5 @@
 package com.erp.Model;
 
-import com.erp.Service.Auth.AuthUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import java.util.List;
 @Table(name = "root_user")
 @Getter
 @Setter
-public class RootUser implements UserDetails{
+public class RootUser implements GenericUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +22,18 @@ public class RootUser implements UserDetails{
 
     private String name;
 
+
     private String email;
 
     private String password;
 
+    @Column(name = "is_active")
+    private boolean isActive = true;
 
+    // Spring Security UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROOT"));
+        return List.of(new SimpleGrantedAuthority("ROLE_ROOT")); // will be "ROOT"
     }
 
     @Override
@@ -60,6 +63,7 @@ public class RootUser implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
+
 }

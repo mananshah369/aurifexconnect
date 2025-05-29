@@ -1,6 +1,5 @@
 package com.erp.Dto.Response;
 
-import com.erp.Enum.UserType;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -17,8 +16,6 @@ public class AdminResponse {
 
     private long contactNo;
 
-    private UserType userType;
-
     private boolean is_Active;
 
     private LocalDateTime createdAt;
@@ -26,4 +23,6 @@ public class AdminResponse {
     private LocalDateTime updatedAt;
 
     private long createdByRootUserId;
+
+    private long lastUpdatedByRootUserId;
 }

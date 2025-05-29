@@ -11,8 +11,8 @@ public class CookieManager {
 
     private final AppEnv env;
 
-    public String generateCookie(String name,String value, long maxAge){
-        return ResponseCookie.from(name,value)
+    public String generateCookie(String name, String value, long maxAge) {
+        return ResponseCookie.from(name, value)
                 .domain(env.getDomain().getName())
                 .path("/")
                 .sameSite(env.getDomain().getSameSite())
@@ -22,6 +22,4 @@ public class CookieManager {
                 .build()
                 .toString();
     }
-
-
 }

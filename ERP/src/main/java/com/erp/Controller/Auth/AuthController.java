@@ -6,6 +6,7 @@ import com.erp.Service.Auth.AuthService;
 import com.erp.Service.TokenGeneration.TokenGenerationService;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.ResponseStructure;
+import com.erp.Utility.SimpleResponseStructure;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,26 +17,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class AuthController {
-
-
-    private final TokenGenerationService tokenGenerationService;
     private final AuthService authService;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<ResponseStructure<AuthRecord>> login(@RequestBody LoginRequest request) {
-//        AuthRecord authRecord;
-//
-//        // Dispatch login based on user type
-//        switch (request.userType()) {
-//            case ROOT -> authRecord = authService.login(request);
-//            case ADMIN -> authRecord = authService.login(request);
-//            case USER -> authRecord = authService.login(request);
-//            default -> throw new IllegalArgumentException("Unsupported user type: " + request.userType());
-//        }
-//
-//        // Generate tokens and attach to response
-//        HttpHeaders headers = tokenGenerationService.grantAccessAndRefreshToken(authRecord);
-//        return ResponseBuilder.success(HttpStatus.OK, headers, "Login successful!", authRecord);
-//    }authRecord
+    private final TokenGenerationService tokenGenerationService;
 
+    @PostMapping("/login")
+    public ResponseEntity<ResponseStructure<AuthRecord>> login(@RequestBody LoginRequest loginRequest) {
+        AuthRecord authRecord = authService.login(loginRequest);
+        HttpHeaders headers = tokenGenerationService.grantAccessAndRefreshToken(authRecord);
+        return ResponseBuilder.success(HttpStatus.OK, headers, "Login successful", authRecord);
+    }
+
+    @PostMapping("/refresh-login")
+    public ResponseEntity<ResponseStructure<AuthRecord>> refreshLogin(@CookieValue("rt") String refreshToken) {
+        AuthRecord authRecord = authService.refreshLogin(refreshToken);
+        HttpHeaders headers = tokenGenerationService.grantAccessAndRefreshToken(authRecord);
+        return ResponseBuilder.success(HttpStatus.OK, headers, "New access token generated", authRecord);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<SimpleResponseStructure> logout(
+            @CookieValue("rt") String refreshToken,
+            @CookieValue("at") String accessToken) {
+        HttpHeaders headers = authService.logout(refreshToken, accessToken);
+        return ResponseBuilder.success(HttpStatus.OK, headers, "Logout successful");
+    }
 }

@@ -25,7 +25,7 @@ public class ResponseBuilder {
                 .message(message)
                 .data(data)
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(status)
                 .headers(headers)
                 .body(structur);
     }
@@ -50,6 +50,17 @@ public class ResponseBuilder {
 
         return ResponseEntity.status(status)
                 .body(setResponseStructure);
+    }
+
+    public static ResponseEntity<SimpleResponseStructure> success(HttpStatus status,HttpHeaders headers, String message){
+        SimpleResponseStructure simpleResponseStructure = SimpleResponseStructure.builder()
+                .status(status.value())
+                .message(message)
+                .build();
+
+        return ResponseEntity.status(status)
+                .headers(headers)
+                .body(simpleResponseStructure);
     }
 
     public static ResponseEntity<SimpleErrorResponse> error(HttpStatus status, String message) {

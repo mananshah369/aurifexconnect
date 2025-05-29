@@ -18,12 +18,12 @@ public class JWTService {
     private final AppEnv env;
 
     public String generateToken(TokenPayload tokenPayload){
-    return Jwts.builder()
-            .setClaims(tokenPayload.claims())
-            .setIssuedAt(Date.from(tokenPayload.issuedAt()))
-            .setExpiration(Date.from(tokenPayload.expiration()))
-            .signWith(KeyHolder.getKey(env.getSecurity().getSecret()) ,SignatureAlgorithm.HS256)
-            .compact();
+        return Jwts.builder()
+                .setClaims(tokenPayload.claims())
+                .setIssuedAt(Date.from(tokenPayload.issuedAt()))
+                .setExpiration(Date.from(tokenPayload.expiration()))
+                .signWith(KeyHolder.getKey(env.getSecurity().getSecret()) ,SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public Claims parseToken(String token) {
@@ -38,11 +38,4 @@ public class JWTService {
         }
     }
 
-    public String getUserEmailFromToken(String token) {
-        return parseToken(token).get("user_email", String.class);
-    }
-
-    public String getUserTypeFromToken(String token) {
-        return parseToken(token).get("user_type", String.class);
-    }
 }

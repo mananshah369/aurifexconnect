@@ -1,14 +1,17 @@
 package com.erp.Dto.Request;
 
-import com.erp.Model.Role;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
-@Getter
 @Setter
+@Getter
 public class RoleListRequest {
 
+
+    @NotEmpty
     private Set<RoleRequest> roles;
 }

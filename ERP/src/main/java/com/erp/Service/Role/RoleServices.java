@@ -1,11 +1,16 @@
 package com.erp.Service.Role;
 
-import com.erp.Dto.Request.RoleRequest;
+import com.erp.Dto.Request.RoleListRequest;
 import com.erp.Dto.Response.RoleResponse;
+import jakarta.validation.Valid;
 
-import java.util.Set;
+import java.util.List;
 
 public interface RoleServices {
 
-    Set<RoleResponse> createListOfRoles(Set<RoleRequest> roleSetRequest);
+
+    List<RoleResponse> createRoles(@Valid RoleListRequest roleSetRequest);
+
+
+    List<RoleResponse> getAllRoles();
 }

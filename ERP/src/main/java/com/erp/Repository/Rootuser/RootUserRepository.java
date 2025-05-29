@@ -1,13 +1,14 @@
 package com.erp.Repository.Rootuser;
 
 import com.erp.Model.RootUser;
+import com.erp.Repository.GenericUserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface RootUserRepository extends JpaRepository<RootUser, Long> {
-
-
+@Repository("rootUserRepository")
+public interface RootUserRepository extends JpaRepository<RootUser, Long>, GenericUserRepository<RootUser> {
 
     Optional<RootUser> findByEmail(String email);
     boolean existsByEmail(String email);
