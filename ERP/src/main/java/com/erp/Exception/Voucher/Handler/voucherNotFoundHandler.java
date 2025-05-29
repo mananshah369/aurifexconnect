@@ -1,9 +1,7 @@
-
-package com.erp.Exception.Admin.Handler;
-
-import com.erp.Exception.Admin.AdminNotFoundException;
+package com.erp.Exception.Voucher.Handler;
 
 
+import com.erp.Exception.Voucher.VoucherNotFound;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.SimpleErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -12,10 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AdminExceptionHandler {
+public class voucherNotFoundHandler {
 
     @ExceptionHandler
-    public ResponseEntity<SimpleErrorResponse> handlerAdminNotFound(AdminNotFoundException ex){
-        return ResponseBuilder.error(HttpStatus.NOT_FOUND,ex.getMessage());
+    ResponseEntity<SimpleErrorResponse> VoucherNotFound(VoucherNotFound e){
+        return ResponseBuilder.error(HttpStatus.NOT_FOUND,e.getMessage());
     }
 }

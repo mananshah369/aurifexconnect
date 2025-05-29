@@ -1,0 +1,1163 @@
+{
+	"info": {
+		"_postman_id": "8bf3df1a-81a6-44c6-b019-281bfa47d265",
+		"name": "ERP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41317421",
+		"_collection_link": "https://aurefix.postman.co/workspace/My-Workspace~22adca90-1bca-41c3-8e1c-30a4a2fb0c6a/collection/41317421-8bf3df1a-81a6-44c6-b019-281bfa47d265?action=share&source=collection_link&creator=41317421"
+	},
+	"item": [
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "AddItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"itemName\": \"Parle-G\",\r\n  \"itemQuantity\": 40.0,\r\n  \"itemDescription\": \"Geneius Biscuit\",\r\n  \"itemCost\": 200.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/inventory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemName\": \"Oreo\",\r\n    \"itemQuantity\": 10.0,\r\n    \"itemDescription\": \"Test Goof\",\r\n    \"itemCost\": 100.0  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/inventory/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByItemId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/inventory/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/inventory/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/inventory?itemName=Amul Milk",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory"
+							],
+							"query": [
+								{
+									"key": "itemName",
+									"value": "Amul Milk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/inventory/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"inventory",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceType",
+			"item": [
+				{
+					"name": "AddService",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serviceName\": \"Website Testing\",\r\n    \"servicePrices\": 450.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/service",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update by id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serviceName\": \"App & Website Design\",\r\n    \"servicePrices\": 550.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/serviceType/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"serviceType",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/service?name=app",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"service"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "app"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/service/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"service",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/service/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"service",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ledger",
+			"item": [
+				{
+					"name": "Add_Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Palak\",\r\n    \"email\":\"palak109@gmail.com\",\r\n    \"phone\": \"1597531235\",\r\n    \"address\":\"Mumbai\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ledger",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ledger/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Vishal\",\r\n    \"email\":\"vishal11@gmail.com\",\r\n    \"phone\": \"4455663322\",\r\n    \"address\":\"Surat\",\r\n    \"partyType\":\"DEBTOR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ledger/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customer/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ledger",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ledger/by-Name/Palak",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger",
+								"by-Name",
+								"Palak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByPartyType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ledger/by-PartyType?partyType=DEBTOR",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ledger",
+								"by-PartyType"
+							],
+							"query": [
+								{
+									"key": "partyType",
+									"value": "DEBTOR"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reference",
+			"item": [
+				{
+					"name": "CreateReference",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"referenceName\":\"AGAINREF-100\",\r\n    \"referenceType\":\"ONACCOUNTREF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"referenceName\":\"ONACCOUNT-100\",\r\n    \"referenceType\":\"ONACCOUNTREF\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"referenceName\": \"AGAIN-200\",\r\n        \"referenceType\": \"AGAINREF\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByReferenceName",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"referenceName\": \"AGAIN-200\",\r\n        \"referenceType\": \"AGAINREF\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference/name/AGAIN-200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference",
+								"name",
+								"AGAIN-200"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByReferenceType",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"referenceName\": \"AGAIN-200\",\r\n        \"referenceType\": \"AGAINREF\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference/type/AGAINREF",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference",
+								"type",
+								"AGAINREF"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ReferenceDeleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"referenceName\": \"AGAIN-200\",\r\n        \"referenceType\": \"AGAINREF\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/reference/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reference",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BankAccount",
+			"item": [
+				{
+					"name": "CreateBankAccount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\":\"1234567880\",\r\n    \"bankName\":\"HDFC\",\r\n    \"openingBalance\":10000.0,\r\n    \"accountStatus\":\"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/bank-account/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank-account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\":\"1234567891\",\r\n    \"bankName\":\"HDFC\",\r\n    \"openingBalance\":10000.0,\r\n    \"accountStatus\":\"ACTIVE\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bank-account/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank-account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\":\"1234567892\",\r\n    \"bankName\":\"HDFC\",\r\n    \"openingBalance\":10000.0,\r\n    \"accountStatus\":\"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/bank-account/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank-account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllBankAccounts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\":\"1234567892\",\r\n    \"bankName\":\"HDFC\",\r\n    \"openingBalance\":10000.0,\r\n    \"accountStatus\":\"ACTIVE\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bank-accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank-accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountNumber\":\"1234567892\",\r\n    \"bankName\":\"HDFC\",\r\n    \"openingBalance\":10000.0,\r\n    \"accountStatus\":\"ACTIVE\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bank-account/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank-account",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Amit\",\r\n  \"lastName\": \"Sharma\",\r\n  \"email\": \"amit.sharma@example.com\",\r\n  \"phoneNo\": 9876543210,\r\n  \"password\": \"Passw0rd@1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Create Role Set",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roles\": [\r\n    { \"roleName\": \"ADMIN\" },\r\n    { \"roleName\": \"USER\" },\r\n    { \"roleName\": \"MANAGER\" }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RootAuthentication",
+			"item": [
+				{
+					"name": "RootLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"vishal369@gmail.com\",\r\n    \"password\": \"Vishal@369\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"vishal369@gmail.com\",\r\n    \"password\": \"Vishal@369\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Master",
+			"item": [
+				{
+					"name": "CreateMaster",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Palak\",\r\n    \"voucherType\":\"SALES\",\r\n    \"amount\":0.0,\r\n    \"referenceType\":null,\r\n    \"description\":\"ALL GOOD\",\r\n    \"bankAccountId\":null,\r\n    \"invoiceId\":null\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/master?ledgerId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"master"
+							],
+							"query": [
+								{
+									"key": "ledgerId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Master",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Palak Dave\",\r\n    \"voucherType\":\"PURCHASE\",\r\n    \"amount\":0.0,\r\n    \"referenceType\":null,\r\n    \"financialYear\":\"2027-26\",\r\n    \"description\":\"ALL GOOD\",\r\n    \"bankAccountId\":null,\r\n    \"invoiceId\":null\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/update-master/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"update-master",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findbyId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/master/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"master",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMaster",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/master-delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"master-delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LineItems",
+			"item": [
+				{
+					"name": "AddLineItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"itemName\": \"Oreo\",\r\n  \"itemQuantity\": 10.0,\r\n  \"itemDescription\": \"Test Goof\",\r\n  \"itemCost\": 100.0\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/items?inventoryId=2&masterId=1&ledgerId=1&quantity=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"items"
+							],
+							"query": [
+								{
+									"key": "inventoryId",
+									"value": "2"
+								},
+								{
+									"key": "masterId",
+									"value": "1"
+								},
+								{
+									"key": "ledgerId",
+									"value": "1"
+								},
+								{
+									"key": "quantity",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "CreateAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"contactNo\": 9876543210,\r\n  \"password\": \"SecurePass@123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/admins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllTheAdmins",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/admins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAdminById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"vishal\",\r\n  \"email\": \"alice.smith@example.com\",\r\n  \"contactNo\": 1234567890,\r\n  \"password\": \"SecurePass123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/admins/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admins",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

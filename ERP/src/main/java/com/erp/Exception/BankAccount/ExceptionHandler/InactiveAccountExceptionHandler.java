@@ -1,7 +1,7 @@
+package com.erp.Exception.BankAccount.ExceptionHandler;
 
-package com.erp.Exception.User.Handler;
-
-import com.erp.Exception.User.UserNotFoundException;
+import com.erp.Exception.BankAccount.BankAccountNotFoundException;
+import com.erp.Exception.BankAccount.InactiveBankAccountException;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.SimpleErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class UserExceptionHandler {
+public class InactiveAccountExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<SimpleErrorResponse> handlerUserNotFoundException(UserNotFoundException e) {
+    ResponseEntity<SimpleErrorResponse> inactiveAccountHandler(InactiveBankAccountException e){
         return ResponseBuilder.error(HttpStatus.NOT_FOUND, e.getMessage());
     }
 }
