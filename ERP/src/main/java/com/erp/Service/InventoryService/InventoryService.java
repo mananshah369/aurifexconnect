@@ -21,7 +21,7 @@ public interface InventoryService {
      *                           of the added item (e.g., item ID, success message, or error information).
      *                           A successful response will typically include the details of the newly added item.
      */
-    InventoryResponse addItem(InventoryRequest inventoryRequest);
+    InventoryResponse addItem(InventoryRequest inventoryRequest,long branchId);
 
     /**
      * Updates an existing item in the inventory.
@@ -55,4 +55,6 @@ public interface InventoryService {
      * @return List<InventoryResponse> A list of matching items, or an empty list if none found.
      */
     List<InventoryResponse> findByItemName(String itemName);
+
+    List<InventoryResponse> findByAll();
 }

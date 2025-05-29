@@ -1,42 +1,51 @@
 package com.erp.Dto.Request;
 
+import com.erp.Dto.Constraints.ContactNumber;
+import com.erp.Dto.Constraints.Name;
+import com.erp.Dto.Constraints.Password;
+import com.erp.Dto.Request.RoleRequest;
 
-import com.erp.Enum.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 public class UserRequest {
 
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 20, message = "Username must be between 3 to 20 characters")
-    @Pattern(
-            regexp = "^[a-zA-Z0-9._-]{3,20}$",
-            message = "Username must be 3-20 characters long and can only contain letters, numbers, dots, underscores, or hyphens"
-    )
-    private String username;
+    @Name
+    private String firstName;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    @Pattern(
-            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-            message = "Email must be a valid format like example@domain.com"
-    )
+    @Name
+    private String lastName;
+
+    @Email
     private String email;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    )
+    @ContactNumber
+    private long phoneNo;
+
+    @Password
     private String password;
 
+    @NotEmpty(message = "Roles cannot be empty")
+    @Size(min = 1, message = "User must have at least one role")
+    private Set<RoleRequest> roles = new HashSet<>();
 
-    private Role role;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRequest that = (UserRequest) o;
+        return Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
 }

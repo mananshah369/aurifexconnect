@@ -2,7 +2,7 @@ package com.erp.Service.ServiceType;
 
 import com.erp.Dto.Request.ServiceTypeRequest;
 import com.erp.Dto.Response.ServiceTypeResponse;
-import com.erp.Exception.ServiceType.ExceptionHandler.ServiceTypeNotFoundByIdException;
+import com.erp.Exception.Service_Exception.ServiceTypeNotFoundByIdException;
 
 import java.util.List;
 

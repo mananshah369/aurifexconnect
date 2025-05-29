@@ -40,7 +40,7 @@ public class InventoryTest {
         InventoryRequest inventoryRequest = new InventoryRequest();
         inventoryRequest.setItemName("Mouse Die Spry");
         inventoryRequest.setItemCost(1000);
-        inventoryRequest.setItemQuantity("5");
+        inventoryRequest.setItemQuantity(5);
         inventoryRequest.setItemDescription("Good For Health");
 
         Inventory inventory = inventoryMapper.mapToInventory(inventoryRequest);
@@ -59,7 +59,7 @@ public class InventoryTest {
     void testFindItemById() throws Exception {
         mockMvc.perform(get("/inventory/" + inventoryId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.itemName").value("Mouse Die Spry"))
+                .andExpect(jsonPath("$.data.").value("Mouse Die Spry"))
                 .andExpect(jsonPath("$.data.itemCost").value(1000))
                 .andExpect(jsonPath("$.data.itemQuantity").value("5"))
                 .andExpect(jsonPath("$.data.itemDescription").value("Good For Health"));
@@ -71,7 +71,7 @@ public class InventoryTest {
         InventoryRequest updateRequest = new InventoryRequest();
         updateRequest.setItemName("Updated Mouse");
         updateRequest.setItemCost(1200);
-        updateRequest.setItemQuantity("10");
+        updateRequest.setItemQuantity(10);
         updateRequest.setItemDescription("Updated description");
 
         mockMvc.perform(put("/inventory/" + inventoryId)
@@ -110,4 +110,9 @@ public class InventoryTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @Order(6)
+    void cleanUp() {
+        inventoryRepository.deleteAll();
+    }
 }

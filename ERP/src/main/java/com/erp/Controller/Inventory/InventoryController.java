@@ -12,10 +12,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -26,15 +28,15 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    @PostMapping("inventory")
+    @PostMapping("inventory/{branchId}")
     @Operation(description = """
             The API Endpoints to Add Inventory Items
             """,
             responses = {
                     @ApiResponse(responseCode = "201",description = "Created Successfully")
             })
-    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@RequestBody InventoryRequest inventoryRequest){
-        InventoryResponse inventoryResponse = inventoryService.addItem(inventoryRequest);
+    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@Valid @RequestBody InventoryRequest inventoryRequest,@PathVariable long branchId){
+        InventoryResponse inventoryResponse = inventoryService.addItem(inventoryRequest,branchId);
         return ResponseBuilder.success(HttpStatus.CREATED,"Inventory Created",inventoryResponse);
     }
 
@@ -97,5 +99,20 @@ public class InventoryController {
     public ResponseEntity<ListResponseStructure<InventoryResponse>> findByItemName(@RequestParam String itemName){
         List<InventoryResponse> inventoryResponse = inventoryService.findByItemName(itemName);
         return ResponseBuilder.success(HttpStatus.OK,"Inventory Found Successfully!!", inventoryResponse);
+    }
+
+    @GetMapping("inventory/all")
+    @Operation(description = """
+            The API Endpoints to Found All_Inventory 
+            """,
+            responses = {
+                    @ApiResponse(responseCode = "200",description = "Found Successfully"),
+                    @ApiResponse(responseCode = "404",description = "Invalid Item Name",content = {
+                            @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
+                    })
+            })
+    public ResponseEntity<ListResponseStructure<InventoryResponse>> findByAllInventory(){
+        List<InventoryResponse> inventoryResponse = inventoryService.findByAll();
+        return ResponseBuilder.success(HttpStatus.OK,"Inventories Found Successfully!!", inventoryResponse);
     }
 }
