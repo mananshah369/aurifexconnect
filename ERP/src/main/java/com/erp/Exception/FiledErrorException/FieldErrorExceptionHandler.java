@@ -42,7 +42,7 @@ public class FieldErrorExceptionHandler extends ResponseEntityExceptionHandler {
         return error;
     }
     private FieldErrorResponse.CustomFieldError createFiledError(FieldError fieldError) {
-        FieldErrorResponse.CustomFieldError error = FieldErrorResponse.createfieldError(
+        FieldErrorResponse.CustomFieldError error = FieldErrorResponse.createFieldError(
             fieldError.getDefaultMessage(),
             fieldError.getRejectedValue(),
             fieldError.getField());
