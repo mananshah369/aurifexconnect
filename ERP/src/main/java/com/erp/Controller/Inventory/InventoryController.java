@@ -28,15 +28,15 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    @PostMapping("inventory")
+    @PostMapping("inventory/{branchId}")
     @Operation(description = """
             The API Endpoints to Add Inventory Items
             """,
             responses = {
                     @ApiResponse(responseCode = "201",description = "Created Successfully")
             })
-    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@Valid @RequestBody InventoryRequest inventoryRequest){
-        InventoryResponse inventoryResponse = inventoryService.addItem(inventoryRequest);
+    public ResponseEntity<ResponseStructure<InventoryResponse>> addItem(@Valid @RequestBody InventoryRequest inventoryRequest,@PathVariable long branchId){
+        InventoryResponse inventoryResponse = inventoryService.addItem(inventoryRequest,branchId);
         return ResponseBuilder.success(HttpStatus.CREATED,"Inventory Created",inventoryResponse);
     }
 
