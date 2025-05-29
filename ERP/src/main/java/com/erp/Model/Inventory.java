@@ -32,6 +32,12 @@ public class Inventory {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
+    @ManyToOne
+    private Branch branch;
+
+    @OneToMany(mappedBy = "inventory")
+    private List<InventoryMovement> inventoryMovement;
+
     @OneToMany(mappedBy = "inventory")
     private List<LineItems> lineItems;
 
