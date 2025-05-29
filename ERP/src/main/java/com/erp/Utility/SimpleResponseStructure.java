@@ -5,9 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ResponseStructure<T> {
+public class SimpleResponseStructure {
     private int status;
     private String message;
-    private T data;
 }
-

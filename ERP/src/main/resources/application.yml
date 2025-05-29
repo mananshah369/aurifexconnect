@@ -1,0 +1,35 @@
+spring:
+    application:
+        name: ERP
+
+    datasource:
+        driver-class-name: org.sqlite.JDBC
+        url: ${SQLITE_URL}
+
+    jpa:
+        database-platform: org.hibernate.community.dialect.SQLiteDialect
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+
+root:
+    email: vishall369@gmail.com
+    password: Vishall@369
+    name: Vk
+
+app:
+    base-url: /api/v1
+    security:
+        secret: ${SECURITY_SECRET}
+        token-validity:
+            access-validity: 3600
+            refresh-validity: 1296000
+    domain:
+        name: ${DOMAIN_NAME}
+        secure: ${DOMAIN_SECURE}
+        same-site: ${DOMAIN_SAME_SITE}
+
+logging:
+    level:
+        com.erp: DEBUG
+        org.springframework.security: DEBUG
