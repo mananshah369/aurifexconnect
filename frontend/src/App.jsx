@@ -1,13 +1,15 @@
-import { Routes, Route } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import MainLayout from './layouts/MainLayout'
-import Dashboard from './pages/Dashboard'
-import Transactions from './pages/Transactions'
-import Reports from './pages/Reports'
-import Budgets from './pages/Budgets'
-import Invoices from './pages/Invoices'
-import Settings from './pages/Settings'
-import NotFound from './pages/NotFound'
+import { Routes, Route } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import MainLayout from "./layouts/MainLayout";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Reports from "./pages/Reports";
+import Budgets from "./pages/Budgets";
+import Invoices from "./pages/Invoices";
+import Inventories from "./pages/Inventories";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
+// import Login from "./pages/Login";
 
 function App() {
   return (
@@ -19,12 +21,17 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="budgets" element={<Budgets />} />
           <Route path="invoices" element={<Invoices />} />
+          <Route path="inventories" element={<Inventories />} />
           <Route path="settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+
+      {/* <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes> */}
     </AnimatePresence>
-  )
+  );
 }
 
-export default App
+export default App;
