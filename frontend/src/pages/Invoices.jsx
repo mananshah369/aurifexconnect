@@ -1,30 +1,36 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { FiPlus, FiFilter, FiFileText, FiPrinter, FiDownload } from 'react-icons/fi'
-import { mockInvoices } from '../data/mockData'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  FiPlus,
+  FiFilter,
+  FiFileText,
+  FiPrinter,
+  FiDownload,
+} from "react-icons/fi";
+import { mockInvoices } from "../data/mockData";
 
 function Invoices() {
-  const [statusFilter, setStatusFilter] = useState('all')
-  
+  const [statusFilter, setStatusFilter] = useState("all");
+
   // Apply filters
-  const filteredInvoices = mockInvoices.filter(invoice => {
-    if (statusFilter === 'all') return true
-    return invoice.status === statusFilter
-  })
-  
+  const filteredInvoices = mockInvoices.filter((invoice) => {
+    if (statusFilter === "all") return true;
+    return invoice.status === statusFilter;
+  });
+
   // Summary calculations
   const totalPaid = mockInvoices
-    .filter(invoice => invoice.status === 'paid')
-    .reduce((sum, invoice) => sum + invoice.amount, 0)
-    
+    .filter((invoice) => invoice.status === "paid")
+    .reduce((sum, invoice) => sum + invoice.amount, 0);
+
   const totalUnpaid = mockInvoices
-    .filter(invoice => invoice.status === 'unpaid')
-    .reduce((sum, invoice) => sum + invoice.amount, 0)
-    
+    .filter((invoice) => invoice.status === "unpaid")
+    .reduce((sum, invoice) => sum + invoice.amount, 0);
+
   const totalDraft = mockInvoices
-    .filter(invoice => invoice.status === 'draft')
-    .reduce((sum, invoice) => sum + invoice.amount, 0)
-  
+    .filter((invoice) => invoice.status === "draft")
+    .reduce((sum, invoice) => sum + invoice.amount, 0);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -47,10 +53,10 @@ function Invoices() {
           </button>
         </div>
       </div>
-      
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <motion.div 
+        <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.2 }}
           className="card"
@@ -58,18 +64,20 @@ function Invoices() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-neutral-500">Paid</p>
-              <p className="mt-1 text-2xl font-semibold text-success-600">₹{totalPaid.toFixed(2)}</p>
+              <p className="mt-1 text-2xl font-semibold text-success-600">
+                ₹{totalPaid.toFixed(2)}
+              </p>
             </div>
             <div className="p-3 rounded-lg bg-success-100">
               <FiFileText className="h-6 w-6 text-success-600" />
             </div>
           </div>
           <p className="mt-4 text-sm text-neutral-500">
-            {mockInvoices.filter(i => i.status === 'paid').length} invoices
+            {mockInvoices.filter((i) => i.status === "paid").length} invoices
           </p>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.2 }}
           className="card"
@@ -77,18 +85,20 @@ function Invoices() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-neutral-500">Unpaid</p>
-              <p className="mt-1 text-2xl font-semibold text-warning-600">₹{totalUnpaid.toFixed(2)}</p>
+              <p className="mt-1 text-2xl font-semibold text-warning-600">
+                ₹{totalUnpaid.toFixed(2)}
+              </p>
             </div>
             <div className="p-3 rounded-lg bg-warning-100">
               <FiFileText className="h-6 w-6 text-warning-600" />
             </div>
           </div>
           <p className="mt-4 text-sm text-neutral-500">
-            {mockInvoices.filter(i => i.status === 'unpaid').length} invoices
+            {mockInvoices.filter((i) => i.status === "unpaid").length} invoices
           </p>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           whileHover={{ y: -4 }}
           transition={{ duration: 0.2 }}
           className="card"
@@ -96,62 +106,64 @@ function Invoices() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-neutral-500">Draft</p>
-              <p className="mt-1 text-2xl font-semibold text-neutral-600">₹{totalDraft.toFixed(2)}</p>
+              <p className="mt-1 text-2xl font-semibold text-neutral-600">
+                ₹{totalDraft.toFixed(2)}
+              </p>
             </div>
             <div className="p-3 rounded-lg bg-neutral-100">
               <FiFileText className="h-6 w-6 text-neutral-600" />
             </div>
           </div>
           <p className="mt-4 text-sm text-neutral-500">
-            {mockInvoices.filter(i => i.status === 'draft').length} invoices
+            {mockInvoices.filter((i) => i.status === "draft").length} invoices
           </p>
         </motion.div>
       </div>
-      
+
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
-        <button 
+        <button
           className={`px-4 py-2 rounded-md text-sm font-medium ${
-            statusFilter === 'all' 
-              ? 'bg-primary-100 text-primary-800' 
-              : 'bg-white text-neutral-700 border border-neutral-300'
+            statusFilter === "all"
+              ? "bg-primary-100 text-primary-800"
+              : "bg-white text-neutral-700 border border-neutral-300"
           }`}
-          onClick={() => setStatusFilter('all')}
+          onClick={() => setStatusFilter("all")}
         >
           All Invoices
         </button>
-        <button 
+        <button
           className={`px-4 py-2 rounded-md text-sm font-medium ${
-            statusFilter === 'paid' 
-              ? 'bg-success-100 text-success-800' 
-              : 'bg-white text-neutral-700 border border-neutral-300'
+            statusFilter === "paid"
+              ? "bg-success-100 text-success-800"
+              : "bg-white text-neutral-700 border border-neutral-300"
           }`}
-          onClick={() => setStatusFilter('paid')}
+          onClick={() => setStatusFilter("paid")}
         >
           Paid
         </button>
-        <button 
+        <button
           className={`px-4 py-2 rounded-md text-sm font-medium ${
-            statusFilter === 'unpaid' 
-              ? 'bg-warning-100 text-warning-800' 
-              : 'bg-white text-neutral-700 border border-neutral-300'
+            statusFilter === "unpaid"
+              ? "bg-warning-100 text-warning-800"
+              : "bg-white text-neutral-700 border border-neutral-300"
           }`}
-          onClick={() => setStatusFilter('unpaid')}
+          onClick={() => setStatusFilter("unpaid")}
         >
           Unpaid
         </button>
-        <button 
+        <button
           className={`px-4 py-2 rounded-md text-sm font-medium ${
-            statusFilter === 'draft' 
-              ? 'bg-neutral-100 text-neutral-800' 
-              : 'bg-white text-neutral-700 border border-neutral-300'
+            statusFilter === "draft"
+              ? "bg-neutral-100 text-neutral-800"
+              : "bg-white text-neutral-700 border border-neutral-300"
           }`}
-          onClick={() => setStatusFilter('draft')}
+          onClick={() => setStatusFilter("draft")}
         >
           Draft
         </button>
       </div>
-      
+
       {/* Invoice List */}
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
@@ -185,7 +197,7 @@ function Invoices() {
               {filteredInvoices.map((invoice) => (
                 <motion.tr
                   key={invoice.id}
-                  whileHover={{ backgroundColor: '#f9fafb' }}
+                  whileHover={{ backgroundColor: "#f9fafb" }}
                   className="cursor-pointer"
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600">
@@ -204,13 +216,15 @@ function Invoices() {
                     ₹{invoice.amount.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <span className={`badge ${
-                      invoice.status === 'paid' 
-                        ? 'badge-success' 
-                        : invoice.status === 'unpaid' 
-                          ? 'badge-warning'
-                          : 'bg-neutral-100 text-neutral-800'
-                    }`}>
+                    <span
+                      className={`badge ${
+                        invoice.status === "paid"
+                          ? "badge-success"
+                          : invoice.status === "unpaid"
+                          ? "badge-warning"
+                          : "bg-neutral-100 text-neutral-800"
+                      }`}
+                    >
                       {invoice.status}
                     </span>
                   </td>
@@ -234,7 +248,7 @@ function Invoices() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
-export default Invoices
+export default Invoices;

@@ -7,8 +7,8 @@ import Button from "@mui/material/Button";
 import { InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../assets/Career.jpg";
-import CodingImage from "../assets/Coding.jpg";
+// import backgroundImage from "../assets/Career.jpg";
+// import CodingImage from "../assets/Coding.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +24,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-
+    console.log("submitted", { email, password });
+    // navigate("/dashboard");
     // try {
     //   const response = await fetch("https://careerwale.com/con/login/", {
     //     method: "POST",
@@ -38,7 +39,7 @@ const Login = () => {
 
     //   if (response.ok) {
     //     console.log("Login successful:", data);
-    //     navigate("/home");
+    //     navigate("/dashboard");
     //   } else {
     //     setErrorMessage(data.message || "Invalid email or password");
     //   }
@@ -86,33 +87,35 @@ const Login = () => {
           "& > :not(style)": {
             width: 420,
             height: 430,
+            // paddingLeft: 5,
+            textAlign: "center",
+            // backgroundColor: "rgb(234, 238, 240)",
           },
         }}
       >
-        <Paper elevation={3}>
+        {/* <Paper elevation={3}>
           <img
             src={CodingImage}
             alt="Login"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
-        </Paper>
+        </Paper> */}
 
         <Paper elevation={3}>
           <Typography
             component="h3"
             variant="h5"
             sx={{
-              display: "flex",
-              justifyContent: "Center",
-              fontWeight: 800,
+              fontWeight: 700,
               marginTop: 7,
+              // marginLeft: -27,
               "& > :not(style)": {
                 width: 488,
                 height: 388,
               },
             }}
           >
-            Log In
+            Login
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -124,9 +127,11 @@ const Login = () => {
               sx={{
                 mt: 5, // margin-top
                 width: 295,
-                marginLeft: 8,
+
+                // marginLeft: 8,
                 "& .MuiOutlinedInput-root": {
                   // also apply to input box
+                  height: 50,
                 },
               }}
             />
@@ -137,11 +142,12 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               sx={{
                 mt: 3, // margin-top
-                marginLeft: 8,
+                // marginLeft: 8,
                 width: 295,
 
                 "& .MuiOutlinedInput-root": {
                   // borderRadius: "20px", // also apply to input box
+                  height: 50,
                 },
               }}
               InputProps={{
@@ -154,17 +160,31 @@ const Login = () => {
                 ),
               }}
             />
+            <Typography
+              sx={{
+                textAlign: "left",
+                ml: 8,
+                mt: 1,
+                color: "rgb(58, 50, 192)",
+                cursor: "pointer",
+              }}
+            >
+              Forgot Password?
+            </Typography>
             <Button
               type="submit"
               variant="outlined"
               sx={{
                 mt: 3, // margin-top
-                marginLeft: 8,
-                width: 105,
+                // marginLeft: ,
+                width: 295,
                 height: 45,
                 borderRadius: "4px",
-                backgroundColor: "blue",
-                color: "white",
+                backgroundColor: "rgba(79, 70, 229, 1)",
+                color: "rgba(255, 255, 255, 1)",
+                "&:hover": {
+                  backgroundColor: "rgba(67, 56, 202, 1)", // Optional hover effect
+                },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "20px", // also apply to input box
                 },

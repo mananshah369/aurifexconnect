@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAppContext } from "../context/AppContext";
 import { motion } from "framer-motion";
 import {
   FiFilter,
@@ -8,10 +7,13 @@ import {
   FiChevronDown,
   FiSearch,
 } from "react-icons/fi";
-// import { it } from "date-fns/locale";
 
 function Inventories() {
+  //////OpenFilter States
+  const [filterOpen, setFilterOpen] = useState(false);
+
   ///////Modal States
+  const [showAddModal, setShowAddModal] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
@@ -58,17 +60,26 @@ function Inventories() {
     },
   ]);
 
+  const uniqueIds = [...new Set(inventories.map((item) => item.id))];
+  const uniqueNames = [...new Set(inventories.map((item) => item.name))];
+  const uniqueBranches = [...new Set(inventories.map((item) => item.branch))];
+
+  ////////////////////Search Functionality////////////////
+
   const filteredInventories = inventories.filter((item) => {
     const matchesName = item.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
     const matchesId = selectedId === "" || item.id === parseInt(selectedId);
+    console.log(matchesId);
 
     const matchesNames = selectedName === "" || item.name === selectedName;
+    // console.log(matchesNames);
 
     const matchesBranch =
       selectedBranch === "" || item.branch === selectedBranch;
+    // console.log(matchesBranch);
 
     return matchesName && matchesId && matchesNames && matchesBranch;
   });
@@ -80,108 +91,10 @@ function Inventories() {
     console.log("Submitted", { name, price });
   };
 
-  ////////////////////Other Functionality////////////////////////
-
-  const { transactions, categories, accounts, addTransaction } =
-    useAppContext();
-  const [filterOpen, setFilterOpen] = useState(false);
-  //   const [searchTerm, setSearchTerm] = useState("");
-
-  // Filter states
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [accountFilter, setAccountFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState("all");
-
-  // Apply filters
-  const inventoriesTransactions = transactions.filter((transaction) => {
-    // Search term
-    if (
-      searchTerm &&
-      !transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return false;
-    }
-
-    // Type filter
-    if (typeFilter !== "all" && transaction.type !== typeFilter) {
-      return false;
-    }
-
-    // Category filter
-    if (categoryFilter !== "all" && transaction.category !== categoryFilter) {
-      return false;
-    }
-
-    // Account filter
-    if (accountFilter !== "all" && transaction.account !== accountFilter) {
-      return false;
-    }
-
-    // Date filter (simplified)
-    if (dateFilter === "today") {
-      const today = new Date().toISOString().split("T")[0];
-      const transactionDate = new Date(transaction.date)
-        .toISOString()
-        .split("T")[0];
-      if (today !== transactionDate) {
-        return false;
-      }
-    } else if (dateFilter === "week") {
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      if (new Date(transaction.date) < weekAgo) {
-        return false;
-      }
-    } else if (dateFilter === "month") {
-      const monthAgo = new Date();
-      monthAgo.setMonth(monthAgo.getMonth() - 1);
-      if (new Date(transaction.date) < monthAgo) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-
-  // Add new transaction modal state
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newTransaction, setNewTransaction] = useState({
-    Name: "",
-    Price: "",
-  });
-
-  // const handleAddTransaction = () => {
-  //   console.log("Hemang");
-  //   try {
-  //     //setShowAddModal(true);
-  //     console.log("Transaction added:");
-  //     if (newTransaction.name && newTransaction.price) {
-  //       addTransaction({
-  //         ...newTransaction,
-  //         price: parseFloat(newTransaction.price),
-  //         status: "completed",
-  //       });
-
-  //       setNewTransaction({
-  //         name: "",
-  //         price: "",
-  //       });
-  //     } else {
-  //       alert("Please fill in all fields.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Add Transaction Error:", err);
-  //   }
-  // };
-
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
   };
-
-  // console.log("Hi");
-  // console.log(showAddModal);
 
   return (
     <motion.div
@@ -255,8 +168,10 @@ function Inventories() {
                 onChange={(e) => setSelectedId(e.target.value)}
               >
                 <option value="">All</option>
-                {inventories.map((item) => (
-                  <option key={item.id}>{item.id}</option>
+                {uniqueIds.map((id) => (
+                  <option key={id} value={id}>
+                    {id}
+                  </option>
                 ))}
               </select>
             </div>
@@ -269,10 +184,10 @@ function Inventories() {
                 value={selectedName}
                 onChange={(e) => setSelectedName(e.target.value)}
               >
-                <option value="all">All Name</option>
-                {inventories.map((item) => (
-                  <option key={item.name} value={item.name}>
-                    {item.name}
+                <option value="">All Name</option>
+                {uniqueNames.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
                   </option>
                 ))}
               </select>
@@ -286,29 +201,14 @@ function Inventories() {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="all">All Name</option>
-                {inventories.map((item) => (
-                  <option key={item.branch} value={item.branch}>
-                    {item.branch}
+                <option value="">All Name</option>
+                {uniqueBranches.map((branch) => (
+                  <option key={branch} value={branch}>
+                    {branch}
                   </option>
                 ))}
               </select>
             </div>
-            {/* <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Quantity
-              </label>
-              <select
-                className="input"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-              >
-                <option value="all">All Time</option>
-                <option value="today">Today</option>
-                <option value="week">Last 7 Days</option>
-                <option value="month">Last 30 Days</option>
-              </select>
-            </div> */}
           </motion.div>
         )}
       </div>
@@ -379,7 +279,6 @@ function Inventories() {
 
               <motion.div
                 initial={{ opacity: 1, scale: 0.95, y: 20 }}
-                //   animate={{ opacity: 1, scale: 1, y: 0 }}
                 className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               >
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -423,8 +322,6 @@ function Inventories() {
                   <button
                     type="submit"
                     className="btn btn-primary w-full sm:w-auto sm:ml-3"
-                    // onClick={handleAddTransaction}
-                    //   onClick={console.log("Hemang")}
                   >
                     Add Item
                   </button>
