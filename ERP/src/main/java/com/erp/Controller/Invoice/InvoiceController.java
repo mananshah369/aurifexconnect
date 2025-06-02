@@ -1,6 +1,7 @@
 package com.erp.Controller.Invoice;
 
 
+import com.erp.Dto.Request.InvoiceRequest;
 import com.erp.Model.InvoiceGenerator;
 import com.erp.Service.Invoice.EmailService;
 import com.erp.Service.Invoice.InvoiceService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -25,35 +27,35 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
     private final PdfService pdfService;
     private final EmailService emailService;
-    @PostMapping("invoice/{masterId}")
-    public String invoicePreview(@PathVariable long masterId,
+    @PostMapping("invoice")
+    public String invoicePreview(@RequestBody InvoiceRequest request,
                                  Model model){
-        InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(masterId);
+        InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(request.getMasterId());
 
         model.addAttribute("invoice",invoiceGenerator);
         return "invoice-preview";
     }
 
-    @PostMapping("/pdf/{masterId}")
-    public ResponseEntity<byte[]> downloadPdf(@PathVariable long masterId){
+    @PostMapping("/pdf")
+    public ResponseEntity<byte[]> downloadPdf(@RequestBody InvoiceRequest request){
 
-        byte[] pdf = pdfService.generateInvoicePdf(masterId);
+        byte[] pdf = pdfService.generateInvoicePdf(request.getMasterId());
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice-" + masterId + ".pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice-" + request.getMasterId() + ".pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
     }
 
 
-    @PostMapping("invoice/{masterId}/sendMail")
-    public ResponseEntity<String> sendInvoiceEmail(@PathVariable long masterId) throws MessagingException {
+    @PostMapping("invoice/sendMail")
+    public ResponseEntity<String> sendInvoiceEmail(@RequestBody InvoiceRequest request) throws MessagingException {
 
-        InvoiceGenerator invoiceGenerator = invoiceService.fetchInvoice(masterId);
+        InvoiceGenerator invoiceGenerator = invoiceService.fetchInvoice(request.getMasterId());
 
         String customerEmail = invoiceGenerator.getLedger().getEmail();
 
-        byte[] pdf = pdfService.generateInvoicePdf(masterId);
+        byte[] pdf = pdfService.generateInvoicePdf(request.getMasterId());
 
         emailService.sendEmail(customerEmail,pdf);
 
