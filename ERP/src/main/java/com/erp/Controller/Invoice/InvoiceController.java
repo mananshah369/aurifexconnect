@@ -27,6 +27,7 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
     private final PdfService pdfService;
     private final EmailService emailService;
+
     @PostMapping("invoice")
     public String invoicePreview(@RequestBody InvoiceRequest request,
                                  Model model){
