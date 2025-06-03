@@ -19,6 +19,7 @@ public class InventoryRequest {
     private double itemQuantity;
     private String itemDescription;
     private double itemCost;
+    private long branchAndInventoryId;
     private String categories;
 
 }

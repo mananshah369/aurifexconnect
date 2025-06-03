@@ -5,9 +5,9 @@ import com.erp.Dto.Response.MasterResponse;
 
 public interface MasterService {
 
-    MasterResponse createMaster(MasterRequest masterRequest , long ledgerId);
+    MasterResponse createMaster(MasterRequest masterRequest);
 
-    MasterResponse findById(long masterId);
+    MasterResponse findById(MasterRequest masterRequest);
 
 //    MasterResponse updateMaster(Long masterId, MasterRequest masterRequest);
 //

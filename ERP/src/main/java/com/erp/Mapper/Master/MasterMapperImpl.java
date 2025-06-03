@@ -19,7 +19,6 @@ public class MasterMapperImpl implements MasterMapper {
         master.setAmount(masterRequest.getAmount());
         master.setName(masterRequest.getName());
         master.setDescription(masterRequest.getDescription());
-        master.setReferenceType(masterRequest.getReferenceType());
         master.setVoucherType(masterRequest.getVoucherType());
         master.setVoucherIndex(masterRequest.getVoucherIndex());
 
@@ -32,7 +31,6 @@ public class MasterMapperImpl implements MasterMapper {
         master.setAmount(masterRequest.getAmount());
         master.setName(masterRequest.getName());
         master.setDescription(masterRequest.getDescription());
-        master.setReferenceType(masterRequest.getReferenceType());
         master.setVoucherType(masterRequest.getVoucherType());
         master.setVoucherIndex(masterRequest.getVoucherIndex());
 
@@ -53,8 +51,11 @@ public class MasterMapperImpl implements MasterMapper {
         masterResponse.setReferenceType(master.getReferenceType());
         masterResponse.setTransactionStatus(master.getTransactionStatus());
         masterResponse.setVoucherType(master.getVoucherType());
-        masterResponse.setDate(master.getDate());
         masterResponse.setVoucherIndex(master.getVoucherIndex());
+        masterResponse.setCreatedDate(master.getCreatedDate());
+        masterResponse.setModifiedDate(master.getModifiedDate());
+        masterResponse.setCreatedBy(master.getCreatedBy());
+        masterResponse.setModifiedBy(master.getModifiedBy());
 
         return masterResponse;
     }

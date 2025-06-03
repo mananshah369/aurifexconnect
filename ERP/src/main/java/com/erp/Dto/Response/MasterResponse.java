@@ -28,6 +28,15 @@ public class MasterResponse {
 
     private String voucherIndex;
 
-    private LocalDateTime date;
+    private LocalDateTime createdDate;
+
+    private String createdBy;
+
+    private String modifiedBy;
+
+    private LocalDateTime modifiedDate;
+
+
+
 
 }

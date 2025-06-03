@@ -1,10 +1,10 @@
 package com.erp.Service.InventoryService;
 
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Request.InventoryRequest;
 import com.erp.Dto.Response.InventoryResponse;
 import com.erp.Exception.Branch_Exception.BranchNotFoundException;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
-import com.erp.Exception.Ledger.LedgerNotFoundException;
 import com.erp.Mapper.Inventory.InventoryMapper;
 import com.erp.Model.Branch;
 import com.erp.Model.Inventory;
@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -24,9 +25,10 @@ public class InventoryServiceImpl implements InventoryService {
     private final BranchRepository branchRepository;
 
     @Override
-    public InventoryResponse addItem(InventoryRequest inventoryRequest , long branchId) {
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(()-> new BranchNotFoundException("Branch Not found , Invalid Branch Id"));
+    public InventoryResponse addItem(InventoryRequest inventoryRequest) {
+        Branch branch = branchRepository.findById(inventoryRequest.getBranchAndInventoryId())
+                .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id"));
+
         Inventory inventory = inventoryMapper.mapToInventory(inventoryRequest);
         inventory.setBranch(branch);
         inventoryRepository.save(inventory);
@@ -34,8 +36,8 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public InventoryResponse updateItem(InventoryRequest inventoryRequest, long id) {
-        Inventory inventory = inventoryRepository.findById(id)
+    public InventoryResponse updateItem(InventoryRequest inventoryRequest) {
+        Inventory inventory = inventoryRepository.findById(inventoryRequest.getBranchAndInventoryId())
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "));
 
         inventoryMapper.mapToInventoryEntity(inventoryRequest,inventory);
@@ -45,34 +47,24 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public InventoryResponse findByItemId(long itemId) {
-        Inventory inventory = inventoryRepository.findById(itemId)
-                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "));
-        return inventoryMapper.mapToInventoryResponse(inventory);
-    }
-
-    @Override
-    public InventoryResponse deleteByItemId(long itemId) {
-        Inventory inventory = inventoryRepository.findById(itemId)
-                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "+itemId));
-
-//        inventory.setDeleted(true);
-//        inventoryRepository.save(inventory);
-
-        inventoryRepository.deleteById(itemId);
-        return inventoryMapper.mapToInventoryResponse(inventory);
-    }
-
-    @Override
-    public List<InventoryResponse> findByItemName(String itemName) {
-        List<Inventory> inventory = inventoryRepository.findByItemName(itemName);
-
-        if (inventory.isEmpty()) {
-            throw new InventoryNotFoundException("No Inventory Not Found By Name " + itemName);
-        }else {
+    public List<InventoryResponse> findByItemIdOrName(CommanParam id) {
+        List<Inventory> inventory = inventoryRepository.findByItemIdOrItemName(id.getId(),id.getName());
+        if(inventory.isEmpty()){
+            throw new InventoryNotFoundException("Inventory not found , invalid id ");
+        }else{
             return inventoryMapper.mapToInventoryResponse(inventory);
         }
     }
+
+    @Override
+    public InventoryResponse deleteByItemId(InventoryRequest inventoryRequest) {
+        Inventory inventory = inventoryRepository.findById(inventoryRequest.getBranchAndInventoryId())
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "));
+
+        inventoryRepository.deleteById(inventory.getItemId());
+        return inventoryMapper.mapToInventoryResponse(inventory);
+    }
+
 
     @Override
     public List<InventoryResponse> findByAll() {
