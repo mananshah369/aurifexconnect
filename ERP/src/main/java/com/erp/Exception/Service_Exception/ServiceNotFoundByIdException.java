@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ServiceTypeNotFoundByIdException extends RuntimeException {
+public class ServiceNotFoundByIdException extends RuntimeException {
     private final String message ;
 }

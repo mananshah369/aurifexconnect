@@ -1,6 +1,7 @@
 package com.erp.Service.BranchService;
 
 import com.erp.Dto.Request.BranchRequest;
+import com.erp.Dto.Request.CommonParam;
 import com.erp.Dto.Response.BranchResponse;
 import com.erp.Exception.Branch_Exception.BranchNotFoundException;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
@@ -29,9 +30,9 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public BranchResponse updateBranch(Long branchId, BranchRequest branchRequest){
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(()-> new BranchNotFoundException("Branch not found with Id: " + branchId));
+    public BranchResponse updateBranch(BranchRequest branchRequest){
+        Branch branch = branchRepository.findById(branchRequest.getId())
+                .orElseThrow(()-> new BranchNotFoundException("Branch not found with Id: " + branchRequest.getId()));
 
         branchMapper.mapToBranchEntity(branchRequest,branch);
         branchRepository.save(branch);
@@ -39,17 +40,10 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public BranchResponse findBranchById(Long branchId){
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(()-> new BranchNotFoundException("Branch not Found, Invalid Id"));
-        return branchMapper.mapToBranchResponse(branch);
-    }
-
-    @Override
-    public BranchResponse deleteBranchById(Long branchId){
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id "+branchId));
-        branchRepository.deleteById(branchId);
+    public BranchResponse deleteBranchById(CommonParam param){
+        Branch branch = branchRepository.findById(param.getId())
+                .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id "+param.getId()));
+        branchRepository.deleteById(param.getId());
         return branchMapper.mapToBranchResponse(branch);
     }
 
@@ -60,22 +54,21 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public List<BranchResponse> getBranchByName(String branchName) {
-        List<Branch> branches = branchRepository.findByBranchName(branchName);
-
+    public List<BranchResponse> getByIdOrBranchName(CommonParam param) {
+        List<Branch> branches = branchRepository.findByBranchIdOrBranchName(param.getId(),param.getName());
         if (branches.isEmpty()) {
-            throw new BranchNotFoundException("No branches found with name: " + branchName);
+            throw new BranchNotFoundException("No branches Found, Invalid Id ");
+        }else {
+            return branchMapper.mapToBranchResponse(branches);
         }
-
-        return branchMapper.mapToBranchResponse(branches);
     }
 
     @Override
-    public List<BranchResponse> getBranchesByItemName(String itemName){
-        List<Branch> branches = branchRepository.findBranchByInventories_ItemName(itemName);
+    public List<BranchResponse> getBranchesByItemName(CommonParam param){
+        List<Branch> branches = branchRepository.findBranchByInventories_ItemName(param.getName());
 
         if(branches.isEmpty()){
-            throw new InventoryNotFoundException("No Branches found Stocking Item: "+itemName);
+            throw new InventoryNotFoundException("No Branches found Stocking Item: "+param.getName());
         }
         return branchMapper.mapToBranchResponse(branches);
     }

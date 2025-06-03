@@ -76,4 +76,13 @@ public class InventoryServiceImpl implements InventoryService {
             return inventoryMapper.mapToInventoryResponse(inventories);
         }
     }
+
+    @Override
+    public List<String> fetchAllCategories(){
+        List<Inventory> inventories = inventoryRepository.findAll();
+        return inventories.stream()
+                .map(Inventory::getCategories)
+                .distinct()
+                .toList();
+    }
 }

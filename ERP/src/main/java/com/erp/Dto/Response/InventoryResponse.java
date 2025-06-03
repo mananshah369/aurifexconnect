@@ -15,6 +15,7 @@ public class InventoryResponse {
     private double itemQuantity;
     private String itemDescription;
     private double itemCost;
+    private String categories;
 
     private LocalDateTime createdAt;
 
