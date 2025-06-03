@@ -1,6 +1,7 @@
 package com.erp.Controller.Admin;
 
 import com.erp.Dto.Request.AdminRequest;
+import com.erp.Dto.Request.CommonParam;
 import com.erp.Dto.Response.AdminResponse;
 import com.erp.Service.Admin.AdminService;
 import com.erp.Utility.ListResponseStructure;
@@ -41,19 +42,27 @@ public class AdminController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
-    @PutMapping("/admins/{adminId}")
-    public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminById(@RequestBody AdminRequest adminRequest, @PathVariable long adminId) {
+    @PostMapping("/admins/search")
+    public ResponseEntity<ListResponseStructure<AdminResponse>> findAdminByIdOrName(@RequestBody CommonParam commonParam){
 
-        AdminResponse adminResponse = adminService.updateAdminById(adminRequest, adminId);
+        List<AdminResponse> adminResponses = adminService.findAdminByIdOrName(commonParam);
+        return  ResponseBuilder.success(HttpStatus.OK,"Admin found with id or name !",adminResponses);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ROOT')")
+    @PutMapping("/admins/update")
+    public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminById(@RequestBody AdminRequest adminRequest) {
+
+        AdminResponse adminResponse = adminService.updateAdminById(adminRequest);
         return ResponseBuilder.success(HttpStatus.OK,"Admin details updated successfully !!",adminResponse);
 
     }
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
-    @DeleteMapping("/admins/delete/{id}")
-    public ResponseEntity<ResponseStructure<AdminResponse>> deleteAdminById(@PathVariable long id){
+    @DeleteMapping("/admins/delete")
+    public ResponseEntity<ResponseStructure<AdminResponse>> deleteAdminById(@RequestBody CommonParam commonParam){
 
-        AdminResponse adminResponse = adminService.deleteAdminById(id);
+        AdminResponse adminResponse = adminService.deleteAdminById(commonParam);
         return ResponseBuilder.success(HttpStatus.OK,"Admin delete Successfully !!",adminResponse);
 
     }
