@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface InventoryRepository extends JpaRepository<Inventory,Long> {
+public interface
+
+InventoryRepository extends JpaRepository<Inventory,Long> {
 
     /**
      * Retrieves a list of {@link Inventory} entities with the specified item name.
