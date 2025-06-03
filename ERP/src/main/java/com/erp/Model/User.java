@@ -79,21 +79,21 @@ public class User implements GenericUser {
 
     @Override
     public boolean isAccountNonExpired() {
-        return GenericUser.super.isAccountNonExpired();
+        return isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return GenericUser.super.isAccountNonLocked();
+        return isActive;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return GenericUser.super.isCredentialsNonExpired();
+        return isActive;
     }
 
     @Override
     public boolean isEnabled() {
-        return GenericUser.super.isEnabled();
+        return isActive;
     }
 }

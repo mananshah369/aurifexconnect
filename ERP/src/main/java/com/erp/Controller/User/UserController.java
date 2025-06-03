@@ -1,6 +1,7 @@
 package com.erp.Controller.User;
 
 
+import com.erp.Dto.Request.CommonParam;
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Request.UserUpdateRequest;
 import com.erp.Dto.Response.UserResponse;
@@ -26,8 +27,10 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/users")
     public ResponseEntity<ResponseStructure<UserResponse>> createUser(@RequestBody UserRequest userRequest) {
+
         UserResponse userResponse = userServices.createUser(userRequest);
         return ResponseBuilder.success(HttpStatus.CREATED, "User created successfully !!", userResponse);
+
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -39,21 +42,30 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE')")
-    @PutMapping("/user/update/{id}")
-    public ResponseEntity<ResponseStructure<UserResponse>> updateUserById
-            (@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable long id) throws Exception {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/users/search")
+    public ResponseEntity<ListResponseStructure<UserResponse>> findByIdOrName(@RequestBody CommonParam commonParamIdOrName){
 
-        UserResponse userResponse = userServices.updateUserById(userUpdateRequest ,id);
+        List<UserResponse> userResponses = userServices.findByIdOrName(commonParamIdOrName);
+        return ResponseBuilder.success(HttpStatus.OK,"User found !!", userResponses);
+
+    }
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PutMapping("/users")
+    public ResponseEntity<ResponseStructure<UserResponse>> updateUserById
+            (@RequestBody UserUpdateRequest userUpdateRequest) throws Exception {
+
+        UserResponse userResponse = userServices.updateUserById(userUpdateRequest);
         return ResponseBuilder.success(HttpStatus.OK,"User Updated Successfully !!", userResponse);
 
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<ResponseStructure<UserResponse>> deleteUserById(@PathVariable long id){
+    @DeleteMapping("/users")
+    public ResponseEntity<ResponseStructure<UserResponse>> deleteUserById(@RequestBody CommonParam commonParamId){
 
-        UserResponse userResponse = userServices.deleteUserById(id);
+        UserResponse userResponse = userServices.deleteUserById(commonParamId);
         return ResponseBuilder.success(HttpStatus.OK,"User delete Successfully !!", userResponse);
 
     }

@@ -1,10 +1,11 @@
 package com.erp.Service.User;
 
+import com.erp.Dto.Request.CommonParam;
 import com.erp.Dto.Request.RoleRequest;
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Request.UserUpdateRequest;
 import com.erp.Dto.Response.UserResponse;
-import com.erp.Exception.Admin.AdminNotFoundException;
+import com.erp.Exception.SameEmail.SameEmailFoundException;
 import com.erp.Exception.User.UserNotFoundException;
 import com.erp.Mapper.User.UserMapper;
 import com.erp.Model.Admin;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserServices {
     public UserResponse createUser(UserRequest userRequest) {
         // Check for duplicate email
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new SameEmailFoundException("Employee already exists with this email");
         }
 
         User user = userMapper.mapToUser(userRequest);
@@ -83,37 +85,55 @@ public class UserServiceImpl implements UserServices {
     @Override
     @Transactional()
     public List<UserResponse> getListOfUsers() {
-        List<User> users = userRepository.findAll();
+
+        List<User> users = userRepository.findByIsActiveTrue() ;
         return userMapper.mapToListOfUserResponse(users);
     }
 
     @Override
-    public UserResponse updateUserById(UserUpdateRequest userUpdateRequest, long id) throws Exception{
+    public UserResponse updateUserById(UserUpdateRequest userUpdateRequest) throws Exception{
+
         User user = (User) userIdentity.getCurrentUser();
 
-        if(user.getId() == id){
+        if(user.getId() == userUpdateRequest.getId()){
             userMapper.mapTOUserEntity(userUpdateRequest,user);
         }else {
-            throw new IllegalAccessException("With this id: "+ id + "currently not login !");
+            throw new UserNotFoundException("With this user id: "+ userUpdateRequest.getId() + "user is currently not login !");
         }
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
+
     }
 
     @Override
-    public UserResponse deleteUserById(long id) {
+    public UserResponse deleteUserById(CommonParam commonParamId) {
 
         Admin currentUser = (Admin) userIdentity.getCurrentUser();
         if (currentUser == null) {
             throw new SecurityException("No authenticated user found");
         }
 
-        User user = userRepository.findById(id)
-                .orElseThrow(()-> new UserNotFoundException("Admin not found with this id: "+id));
+        User user = userRepository.findById(commonParamId.getId())
+                .orElseThrow(()-> new UserNotFoundException("User not found with this id: "+commonParamId.getId()));
 
         user.setActive(false);
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
+
+    }
+
+    @Override
+    public List<UserResponse> findByIdOrName(CommonParam commonParamIdOrName) {
+
+        Admin currentUser = (Admin) userIdentity.getCurrentUser();
+        if (currentUser == null) {
+            throw new SecurityException("No authenticated user found");
+        }
+
+        List<User> users = Collections.singletonList(userRepository.findByIdOrFirstNameAndIsActiveTrue(commonParamIdOrName.getId(), commonParamIdOrName.getName())
+                .orElseThrow(() -> new UserNotFoundException(("User not found !"))));
+
+        return userMapper.mapToListOfUserResponse(users);
 
     }
 }
