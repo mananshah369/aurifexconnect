@@ -52,4 +52,7 @@ public class Master {
 
     @OneToMany(mappedBy = "master")
     private List<LineItems> lineItems;
+
+    @OneToOne(mappedBy = "master")
+    private  InvoiceGenerator invoiceGenerator;
 }
