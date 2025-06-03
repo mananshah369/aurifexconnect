@@ -14,4 +14,6 @@ public interface InventoryRepository extends JpaRepository<Inventory,Long> {
      * @return A list of matching {@link Inventory} entities, or an empty list if none found.
      */
     List<Inventory> findByItemName(String itemName);
+
+    List<Inventory> findAll();
 }

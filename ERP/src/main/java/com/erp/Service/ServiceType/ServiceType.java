@@ -1,0 +1,30 @@
+package com.erp.Service.ServiceType;
+
+import com.erp.Dto.Request.CommonParam;
+import com.erp.Dto.Request.ServiceRequest;
+import com.erp.Dto.Response.ServiceResponse;
+import com.erp.Enum.ServiceStatus;
+
+import java.util.List;
+
+public interface ServiceType {
+
+    ServiceResponse addService(ServiceRequest serviceRequest);
+
+    ServiceResponse updateById(ServiceRequest serviceRequest);
+
+    List<ServiceResponse> findByIdOrServiceName(CommonParam param);
+
+    ServiceResponse deleteByServiceId(CommonParam param);
+
+    List<ServiceResponse> fetchAllServices();
+
+    List<ServiceResponse> findByStatus(ServiceRequest serviceRequest);
+
+    List<String> fetchAllCategories();
+
+    List<ServiceResponse> fetchServiceByCategory(ServiceRequest serviceRequest);
+
+
+
+}
