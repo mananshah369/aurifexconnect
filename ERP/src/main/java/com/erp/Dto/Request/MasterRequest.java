@@ -1,7 +1,5 @@
 package com.erp.Dto.Request;
 
-import com.erp.Enum.ReferenceType;
-import com.erp.Enum.TransactionStatus;
 import com.erp.Enum.VoucherType;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +15,6 @@ public class MasterRequest {
 
     private double amount;
 
-    private ReferenceType referenceType;
-
     private String description;
 
     private String voucherIndex;
@@ -27,6 +23,8 @@ public class MasterRequest {
     private long bankAccountId;
     private long invoiceId;
     private long billId;
+    private long ledgerId;
+    private long findMasterId;
 
  //voucher find based on voucher type and increment there index
 

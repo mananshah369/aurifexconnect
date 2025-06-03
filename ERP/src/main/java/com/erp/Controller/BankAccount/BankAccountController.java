@@ -1,6 +1,7 @@
 package com.erp.Controller.BankAccount;
 
 import com.erp.Dto.Request.BankAccountRequest;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.BankAccountResponse;
 import com.erp.Service.BankAccount.BankAccountService;
 import com.erp.Utility.ListResponseStructure;
@@ -22,26 +23,26 @@ public class BankAccountController {
     private final BankAccountService bankAccountService;
 
     @PostMapping("bank-account/{ledgerId}")
-    public ResponseEntity<ResponseStructure<BankAccountResponse>> createBankAccount(@Valid @RequestBody BankAccountRequest bankAccountRequest ,@PathVariable long ledgerId){
+    public ResponseEntity<ResponseStructure<BankAccountResponse>> createBankAccount(@RequestBody BankAccountRequest bankAccountRequest ,@PathVariable long ledgerId){
         BankAccountResponse bankAccountResponse = bankAccountService.createBankAccount(bankAccountRequest , ledgerId);
         return ResponseBuilder.success(HttpStatus.CREATED, "Bank Account Created", bankAccountResponse);
     }
 
-    @PutMapping("bank-account/{id}")
-    public ResponseEntity<ResponseStructure<BankAccountResponse>> updateBankAccount(@RequestBody BankAccountRequest bankAccountRequest, @PathVariable long id){
-        BankAccountResponse bankAccountResponse = bankAccountService.updateBankAccount(bankAccountRequest, id);
+    @PutMapping("bank-account-update")
+    public ResponseEntity<ResponseStructure<BankAccountResponse>> updateBankAccount(@RequestBody BankAccountRequest bankAccountRequest){
+        BankAccountResponse bankAccountResponse = bankAccountService.updateBankAccount(bankAccountRequest);
         return ResponseBuilder.success(HttpStatus.OK,"Bank Account Updated Successfully", bankAccountResponse);
     }
 
-    @GetMapping("bank-account/{bankAccountId}")
-    public ResponseEntity<ResponseStructure<BankAccountResponse>> findByBankAccountId(@PathVariable long bankAccountId){
-        BankAccountResponse bankAccountResponse = bankAccountService.findByBankAccountId(bankAccountId);
+    @PostMapping("bank-account-find")
+    public ResponseEntity<ResponseStructure<BankAccountResponse>> findByBankAccountId(@RequestBody CommanParam param){
+        BankAccountResponse bankAccountResponse = bankAccountService.findByBankAccountId(param);
         return ResponseBuilder.success(HttpStatus.OK,"Bank Account Found Successfully!", bankAccountResponse);
     }
 
-    @DeleteMapping("bank-account/{bankAccountId}")
-    public ResponseEntity<ResponseStructure<BankAccountResponse>> deleteByBankAccountId(@PathVariable long bankAccountId){
-        BankAccountResponse bankAccountResponse = bankAccountService.deleteByBankAccountId(bankAccountId);
+    @DeleteMapping("bank-account-delete")
+    public ResponseEntity<ResponseStructure<BankAccountResponse>> deleteByBankAccountId(@RequestBody BankAccountRequest request){
+        BankAccountResponse bankAccountResponse = bankAccountService.deleteByBankAccountId(request);
         return ResponseBuilder.success(HttpStatus.OK,"Bank Account Deleted Successfully!", bankAccountResponse);
     }
 

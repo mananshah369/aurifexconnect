@@ -1,5 +1,6 @@
 package com.erp.Service.LineItems;
 
+import com.erp.Dto.Request.LineItemsRequest;
 import com.erp.Dto.Response.LineItemsResponse;
 import com.erp.Enum.VoucherType;
 import com.erp.Exception.Inventory_Exception.InsufficientStockException;
@@ -13,6 +14,7 @@ import com.erp.Model.Master;
 import com.erp.Repository.Inventory.InventoryRepository;
 import com.erp.Repository.LineItems.LineItemsRepository;
 import com.erp.Repository.Master.MasterRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +30,20 @@ public class LineItemsServiceImpl implements LineItemService {
     private final MasterRepository masterRepository;
 
     @Override
-    public LineItemsResponse createLineItems(long itemId, long masterId, long ledgerId, double quantity) {
+    @Transactional
+    public LineItemsResponse createLineItems(LineItemsRequest request) {
 
-        Inventory inventory = inventoryRepository.findById(itemId)
-                .orElseThrow(() -> new MasterNotFoundException("Invalid Item ID: " + itemId));
+        Inventory inventory = inventoryRepository.findById(request.getInventoryId())
+                .orElseThrow(() -> new MasterNotFoundException("Invalid Item ID: " + request.getInventoryId()));
 
-        Master master = masterRepository.findById(masterId)
-                .orElseThrow(() -> new MasterNotFoundException("Invalid Master ID: " + masterId));
+        Master master = masterRepository.findById(request.getMasterId())
+                .orElseThrow(() -> new MasterNotFoundException("Invalid Master ID: " + request.getMasterId()));
 
 
         Long masterLedgerId = master.getLedger() != null ? master.getLedger().getLedgerId() : null;
+
+        long ledgerId = request.getLedgerId();
+        double quantity = request.getQuantity();
 
         if (masterLedgerId == null || masterLedgerId.longValue() != ledgerId) {
             throw new LedgerNotFoundException("Ledger does not match the master voucher.");

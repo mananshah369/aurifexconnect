@@ -1,6 +1,7 @@
 package com.erp.Service.BankAccount;
 
 import com.erp.Dto.Request.BankAccountRequest;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.BankAccountResponse;
 
 import java.util.List;
@@ -11,9 +12,9 @@ public interface BankAccountService {
 
     List<BankAccountResponse> getAllBankAccounts();
 
-    BankAccountResponse updateBankAccount(BankAccountRequest bankAccountRequest, long id);
+    BankAccountResponse updateBankAccount(BankAccountRequest bankAccountId);
 
-    BankAccountResponse findByBankAccountId(long bankAccountId);
+    BankAccountResponse findByBankAccountId(CommanParam bankAccountId);
 
-    BankAccountResponse deleteByBankAccountId(long bankAccountId);
+    BankAccountResponse deleteByBankAccountId(BankAccountRequest bankAccountId);
 }
