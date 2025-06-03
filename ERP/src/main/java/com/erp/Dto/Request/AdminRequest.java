@@ -12,13 +12,13 @@ import lombok.Setter;
 @Setter
 public class AdminRequest {
 
-    @Name
+    private long id;
+
     private String name;
 
-    @Email
     private String email;
 
-    @ContactNumber
+
     private long contactNo;
 
     @Password

@@ -58,4 +58,6 @@ public interface InventoryService {
 //    List<InventoryResponse> findByItemName(String itemName);
 
     List<InventoryResponse> findByAll();
+
+    List<String> fetchAllCategories();
 }

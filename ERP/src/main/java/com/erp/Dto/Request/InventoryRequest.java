@@ -1,6 +1,7 @@
 package com.erp.Dto.Request;
 
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -18,6 +19,8 @@ public class InventoryRequest {
     private double itemQuantity;
     private String itemDescription;
     private double itemCost;
+    private String categories;
     private long branchAndInventoryId;
+    private String categories;
 
 }

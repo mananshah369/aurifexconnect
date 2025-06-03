@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Invoice Preview</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 12px;
+      background-color: #f8f9fa;
+      padding: 40px;
+    }
+
+    .invoice-box {
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 30px;
+    }
+
+    h2 {
+      margin-bottom: 0.25rem;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-0 {
+      margin-bottom: 0;
+    }
+
+    .mb-1 {
+      margin-bottom: 0.25rem;
+    }
+
+    .mb-3 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1.5rem;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+
+    .table th, .table td {
+      border: 1px solid #dee2e6;
+      padding: 8px;
+      vertical-align: middle;
+    }
+
+    .table-light {
+      background-color: #f1f1f1;
+    }
+
+    .footer-note {
+      font-size: 0.9rem;
+      color: #666666;
+    }
+
+    .text-lg {
+      font-size: 1.25rem;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+
+    .col-md-4 {
+      flex: 0 0 33.3333%;
+      max-width: 33.3333%;
+      padding: 0 15px;
+    }
+
+    .justify-content-end {
+      justify-content: flex-end;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="invoice-box">
+  <!-- Company Info -->
+  <div class="text-center mb-4">
+    <h2 class="mb-1">Your Company Pvt Ltd</h2>
+    <p class="mb-0">123 Office Street, Mumbai</p>
+    <p class="mb-0">Phone: 99999 99999</p>
+    <p class="mb-0">Email: info@yourcompany.com</p>
+  </div>
+
+  <!-- Customer & Invoice Info -->
+  <table class="table mb-4">
+    <tr>
+      <td style="width: 50%;">
+        <h5>Customer Info</h5>
+        <p><strong>Name:</strong> <span th:text="${invoice.ledger.name}"/></p>
+        <p><strong>Address:</strong> <span th:text="${invoice.ledger.address}"/></p>
+        <p><strong>Email:</strong> <span th:text="${invoice.ledger.email}"/></p>
+        <p><strong>Phone:</strong> <span th:text="${invoice.ledger.phone}"/></p>
+      </td>
+      <td style="width: 50%;">
+        <h5>Invoice Info</h5>
+        <p><strong>Invoice ID:</strong> <span th:text="${invoice.invoiceGeneratedId}"/></p>
+        <p><strong>Date:</strong> <span th:text="${#dates.format(invoice.generatedAt, 'dd MM yyyy')}"/></p>
+        <p><strong>Payment Mode:</strong> Cash</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Item Table -->
+  <h5 class="mb-3">Item Details</h5>
+  <table class="table">
+    <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Item Name</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item, stat : ${invoice.items}">
+      <td th:text="${stat.count}"></td>
+      <td th:text="${item.itemName}"></td>
+      <td th:text="${item.quantity}"></td>
+      <td th:text="'₹' + ${item.unitPrice}"></td>
+      <td th:text="'₹' + ${item.totalPrice}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Totals Section -->
+  <div class="row justify-content-end">
+    <div class="col-md-4">
+      <table class="table">
+        <tr>
+          <th>Subtotal:</th>
+          <td th:text="'₹' + ${invoice.totalAmount}"></td>
+        </tr>
+        <tr class="table-light">
+          <th>Final Amount:</th>
+          <td><strong th:text="'₹' + ${invoice.totalAmount}"></strong></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <hr />
+  <p class="footer-note">
+    <strong>Terms &amp; Conditions:</strong><br/>
+    Goods once sold will not be taken back. Please make the payment within 15 days.
+  </p>
+</div>
+
+</body>
+</html>

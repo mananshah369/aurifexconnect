@@ -102,4 +102,10 @@ public class InventoryController {
         List<InventoryResponse> inventoryResponse = inventoryService.findByAll();
         return ResponseBuilder.success(HttpStatus.OK,"Inventories Found Successfully!!", inventoryResponse);
     }
+
+    @GetMapping("/categories")
+    public ResponseEntity<ListResponseStructure<String>> fetchAllCategories(){
+        List<String> categories = inventoryService.fetchAllCategories();
+        return ResponseBuilder.success(HttpStatus.OK,"Categories Fetched Successfully",categories);
+    }
 }
