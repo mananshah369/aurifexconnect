@@ -1,5 +1,6 @@
 package com.erp.Service.Invoice;
 
+import com.erp.Dto.Request.InvoiceRequest;
 import com.erp.Exception.Master.MasterNotFoundException;
 import com.erp.Model.InvoiceGenerator;
 import com.erp.Model.Master;
@@ -16,10 +17,10 @@ public class InvoiceServiceImpl implements InvoiceService{
     private final InvoiceRepository invoiceRepository;
 
     @Override
-    public InvoiceGenerator createInvoice(long masterId) {
+    public InvoiceGenerator createInvoice(InvoiceRequest request) {
 
-        Master master = masterRepository.findById(masterId)
-                .orElseThrow(()-> new MasterNotFoundException("Master with" + masterId + " that id Not Found"));
+        Master master = masterRepository.findById(request.getMasterId())
+                .orElseThrow(()-> new MasterNotFoundException("Master with" + request.getMasterId() + " that id Not Found"));
 
         InvoiceGenerator invoice = new InvoiceGenerator();
         invoice.setItems(master.getLineItems());
@@ -32,9 +33,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 
     @Override
-    public InvoiceGenerator fetchInvoice(long masterId){
+    public InvoiceGenerator fetchInvoice(InvoiceRequest request){
 
-        InvoiceGenerator invoice = invoiceRepository.findById(masterId)
+        InvoiceGenerator invoice = invoiceRepository.findById(request.getMasterId())
                 .orElseThrow(()-> new MasterNotFoundException("Master Not Found"));
 
         invoice.setItems(invoice.getMaster().getLineItems());

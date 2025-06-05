@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class InvoiceController {
     @PostMapping("invoice")
     public String invoicePreview(@RequestBody InvoiceRequest request,
                                  Model model){
-        InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(request.getMasterId());
+        InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(request);
 
         model.addAttribute("invoice",invoiceGenerator);
         return "invoice-preview";
@@ -40,7 +39,7 @@ public class InvoiceController {
     @PostMapping("/pdf")
     public ResponseEntity<byte[]> downloadPdf(@RequestBody InvoiceRequest request){
 
-        byte[] pdf = pdfService.generateInvoicePdf(request.getMasterId());
+        byte[] pdf = pdfService.generateInvoicePdf(request);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice-" + request.getMasterId() + ".pdf")
@@ -52,11 +51,11 @@ public class InvoiceController {
     @PostMapping("invoice/sendMail")
     public ResponseEntity<String> sendInvoiceEmail(@RequestBody InvoiceRequest request) throws MessagingException {
 
-        InvoiceGenerator invoiceGenerator = invoiceService.fetchInvoice(request.getMasterId());
+        InvoiceGenerator invoiceGenerator = invoiceService.fetchInvoice(request);
 
         String customerEmail = invoiceGenerator.getLedger().getEmail();
 
-        byte[] pdf = pdfService.generateInvoicePdf(request.getMasterId());
+        byte[] pdf = pdfService.generateInvoicePdf(request);
 
         emailService.sendEmail(customerEmail,pdf);
 
