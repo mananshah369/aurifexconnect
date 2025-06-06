@@ -22,6 +22,18 @@ public class SalaryController {
 
     private final SalaryService salaryService;
 
+    @PostMapping("/add")
+    @Operation(summary = "Add or Generate Salary Detail",
+            description = "API Endpoint to add or generate a salary detail for a user and month",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Salary record created/updated"),
+                    @ApiResponse(responseCode = "400", description = "Invalid request data")
+            })
+    public ResponseEntity<ResponseStructure<SalaryResponse>> addSalaryDetail(@RequestBody @Valid SalaryRequest request) {
+        SalaryResponse response = salaryService.generateSalaryForMonth(request);
+        return ResponseBuilder.success(HttpStatus.CREATED, "Salary detail added successfully", response);
+    }
+
     @PostMapping("/user")
     @Operation(summary = "Find Salary records",
             description = "API Endpoint to Find Salary records",
@@ -70,7 +82,7 @@ public class SalaryController {
         return ResponseBuilder.success(HttpStatus.OK, "Salary updated successfully", response);
     }
 
-    @GetMapping
+    @PostMapping
     @Operation(summary = "Find All Salary records",
             description = "API Endpoint to Find All Salaries records",
             responses = {

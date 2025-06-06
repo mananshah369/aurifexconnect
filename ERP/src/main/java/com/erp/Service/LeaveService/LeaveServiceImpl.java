@@ -43,41 +43,9 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public LeaveResponse getLeaveRequestsByUserId(Param param) {
-        Leave leave = leaveRepository.findById(param.getUserId())
-                .orElseThrow(() -> new LeaveNotFoundException("Leave not found with id: " + param.getUserId()));
-        return leaveMapper.mapToLeaveResponse(leave);
-    }
-
-    @Override
-    public LeaveResponse updateLeaveStatus(LeaveRequest request) {
-        Leave leave = leaveRepository.findById(request.getId())
-                .orElseThrow(() -> new LeaveNotFoundException("Leave not found with id: " + request.getId()));
-
-        if (request.getStatus() == null)
-            throw new IllegalArgumentException("Leave status must not be null");
-
-        leave.setStatus(request.getStatus());
-        leaveRepository.save(leave);
-        return leaveMapper.mapToLeaveResponse(leave);
-    }
-
-    @Override
-    public List<LeaveResponse> getAllLeaveRequests() {
-        List<Leave> leaves = leaveRepository.findAll();
-        if (leaves.isEmpty())
-            throw new LeaveNotFoundException("No leave records found");
-
-        return leaves.stream()
-                .map(leaveMapper::mapToLeaveResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public LeaveResponse updateLeaveRequestByLeaveId(LeaveRequest request) {
         Leave leave = leaveRepository.findById(request.getId())
                 .orElseThrow(() -> new LeaveNotFoundException("Leave not found with id: " + request.getId()));
-
         leave.setStartDate(request.getStartDate());
         leave.setEndDate(request.getEndDate());
         leave.setReason(request.getReason());
@@ -87,14 +55,11 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveResponse> getLeaveRequestsByStatus(LeaveRequest request) {
-        if (request.getStatus() == null)
-            throw new IllegalArgumentException("Leave status must not be null");
-
-        List<Leave> leaves = leaveRepository.findByStatus(request.getStatus());
-        if (leaves.isEmpty())
-            throw new LeaveNotFoundException("No leave records found with status: " + request.getStatus());
-
+    public List<LeaveResponse> getLeaveRequestsByUserId(Param param) {
+        List<Leave> leaves = leaveRepository.findByUserId(param.getUserId());
+        if (leaves.isEmpty()) {
+            throw new LeaveNotFoundException("No leave found with user id: " + param.getUserId());
+        }
         return leaves.stream()
                 .map(leaveMapper::mapToLeaveResponse)
                 .collect(Collectors.toList());
@@ -104,24 +69,60 @@ public class LeaveServiceImpl implements LeaveService {
     public List<LeaveResponse> getLeaveRequestsByDateRange(LeaveRequest request) {
         LocalDate start = request.getStartDate();
         LocalDate end = request.getEndDate();
-
         if (start == null || end == null)
             throw new IllegalArgumentException("Start date and end date must not be null");
-
         List<Leave> leaves = leaveRepository.findByStartDateBetween(start, end);
         if (leaves.isEmpty())
             throw new LeaveNotFoundException("No leave records found between " + start + " and " + end);
-
         return leaves.stream()
                 .map(leaveMapper::mapToLeaveResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
+    public List<LeaveResponse> getLeaveRequestsByStatus(LeaveRequest request) {
+        if (request.getStatus() == null)
+            throw new IllegalArgumentException("Leave status must not be null");
+        List<Leave> leaves = leaveRepository.findByStatus(request.getStatus());
+        if (leaves.isEmpty())
+            throw new LeaveNotFoundException("No leave records found with status: " + request.getStatus());
+        return leaves.stream()
+                .map(leaveMapper::mapToLeaveResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LeaveResponse> getAllLeaveRequests() {
+        List<Leave> leaves = leaveRepository.findAll();
+        if (leaves.isEmpty())
+            throw new LeaveNotFoundException("No leave records found");
+        return leaves.stream()
+                .map(leaveMapper::mapToLeaveResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public LeaveResponse updateLeaveStatus(LeaveRequest request) {
+        Leave leave = leaveRepository.findById(request.getId())
+                .orElseThrow(() -> new LeaveNotFoundException("Leave not found with id: " + request.getId()));
+        LeaveStatus status = request.getStatus() == null ? LeaveStatus.PENDING : request.getStatus();
+        switch (status) {
+            case PENDING:
+            case APPROVED:
+            case REJECTED:
+                leave.setStatus(status);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid leave status: " + status);
+        }
+        leaveRepository.save(leave);
+        return leaveMapper.mapToLeaveResponse(leave);
+    }
+
+    @Override
     public LeaveResponse deleteLeaveRequest(Param param) {
         Leave leave = leaveRepository.findById(param.getId())
                 .orElseThrow(() -> new LeaveNotFoundException("Leave not found with id: " + param.getId()));
-
         leaveRepository.delete(leave);
         return leaveMapper.mapToLeaveResponse(leave);
     }
@@ -134,7 +135,6 @@ public class LeaveServiceImpl implements LeaveService {
         try {
             return LeaveType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
-            // Return UNPAID instead of throwing exception for invalid value
             return LeaveType.UNPAID;
         }
     }

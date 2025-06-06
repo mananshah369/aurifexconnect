@@ -83,14 +83,13 @@
             <td class="right" th:text="${salary.deductions}">[Deduction]</td>
         </tr>
         <tr>
-            <td>Paid Days</td>
-            <td class="right" th:text="${salary.paidDays}">[Paid Days]</td>
-        </tr>
-        <tr>
             <td>Working Days</td>
             <td class="right" th:text="${salary.workingDays}">[Working Days]</td>
         </tr>
-
+        <tr>
+            <td>Paid Days</td>
+            <td class="right" th:text="${salary.paidDays}">[Paid Days]</td>
+        </tr>
         <tr>
             <td><strong>Total (Net Salary)</strong></td>
             <td class="right" th:text="${salary.netSalary}">[Net Salary]</td>
@@ -98,10 +97,8 @@
         </tbody>
     </table>
 </div>
-
 <div class="signature">
     <p>Authorized Signed</p>
 </div>
-
 </body>
 </html>

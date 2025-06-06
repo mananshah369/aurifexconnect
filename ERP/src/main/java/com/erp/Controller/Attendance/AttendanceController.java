@@ -56,7 +56,7 @@ public class AttendanceController {
         return ResponseBuilder.success(HttpStatus.OK, "Checked out successfully", response);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @Operation(
             summary = "Update Attendance By User ID and Date",
             description = "Update attendance details such as check-in and check-out times"
@@ -71,7 +71,7 @@ public class AttendanceController {
         return ResponseBuilder.success(HttpStatus.OK, "Attendance updated successfully", response);
     }
 
-    @GetMapping("/getAttendance")
+    @PostMapping("/getAttendance")
     @Operation(
             summary = "Get Attendance By User ID",
             description = "Fetch attendance record by User ID"
@@ -84,20 +84,6 @@ public class AttendanceController {
             @Valid @RequestBody Param param) {
         AttendanceResponse response = attendanceService.getAttendanceById(param);
         return ResponseBuilder.success(HttpStatus.OK, "Attendance record found", response);
-    }
-
-    @GetMapping("/all")
-    @Operation(
-            summary = "Get All Attendance Records",
-            description = "Retrieve all attendance records"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All attendance records fetched"),
-            @ApiResponse(responseCode = "404", description = "No attendance records found")
-    })
-    public ResponseEntity<ListResponseStructure<AttendanceResponse>> getAllAttendances() {
-        List<AttendanceResponse> responses = attendanceService.getAllAttendances();
-        return ResponseBuilder.success(HttpStatus.OK, "All attendance records fetched", responses);
     }
 
     @PostMapping("/user/records")
@@ -128,6 +114,20 @@ public class AttendanceController {
             @Valid @RequestBody AttendanceRequest request) {
         List<AttendanceResponse> responses = attendanceService.getMonthlyReport(request);
         return ResponseBuilder.success(HttpStatus.OK, "Monthly attendance report fetched", responses);
+    }
+
+    @PostMapping("/all")
+    @Operation(
+            summary = "Get All Attendance Records",
+            description = "Retrieve all attendance records"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All attendance records fetched"),
+            @ApiResponse(responseCode = "404", description = "No attendance records found")
+    })
+    public ResponseEntity<ListResponseStructure<AttendanceResponse>> getAllAttendances() {
+        List<AttendanceResponse> responses = attendanceService.getAllAttendances();
+        return ResponseBuilder.success(HttpStatus.OK, "All attendance records fetched", responses);
     }
 
     @DeleteMapping("/delete")

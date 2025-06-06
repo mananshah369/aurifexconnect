@@ -10,12 +10,12 @@ public class SalaryResponse {
     private long id;
     private UserResponse user;
     private YearMonth month;
-    private Double baseSalary;
+    private long baseSalary;
+    private long deductions;
+    private long bonus;
     private Integer workingDays;
     private Integer paidDays;
-    private Double deductions;
-    private Double bonus;
-    private Double netSalary;
+    private long netSalary;
     private String remarks;
     private AmountStatus amountStatus;
     private YearMonth paymentDate;

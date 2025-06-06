@@ -4,6 +4,7 @@ import com.erp.Dto.Request.AttendanceRequest;
 import com.erp.Dto.Request.Param;
 import com.erp.Dto.Response.AttendanceResponse;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public interface AttendanceService {
@@ -17,4 +18,7 @@ public interface AttendanceService {
     List<AttendanceResponse> getMonthlyReport(AttendanceRequest request);
     AttendanceResponse deleteAttendanceByUserIDandDate(AttendanceRequest request);
     AttendanceResponse deleteAllAttendances(AttendanceRequest request);
+    int countPresentDaysByUserIdAndMonth(Long userId, YearMonth month);
+
+    void autoCheckout();
 }
