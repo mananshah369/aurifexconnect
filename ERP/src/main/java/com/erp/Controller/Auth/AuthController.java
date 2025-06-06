@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
     private final TokenGenerationService tokenGenerationService;
 

@@ -24,7 +24,6 @@ spring:
                     starttls:
                         enable: true
 
-
 root:
     email: ${ROOT_EMAIL}
     password: ${ROOT_PASSWORD}
@@ -46,3 +45,9 @@ logging:
     level:
         com.erp: DEBUG
         org.springframework.security: DEBUG
+
+    jackson:
+        date-format: dd-MM-yyyy hh:mm:ss a
+        time-zone: Asia/Kolkata
+        serialization:
+            write-dates-as-timestamps: false
