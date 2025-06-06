@@ -1,5 +1,6 @@
 package com.erp.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -96,4 +97,16 @@ public class User implements GenericUser {
     public boolean isEnabled() {
         return isActive;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Salary> salaries;
+
+    @OneToMany(mappedBy = "user")
+    private List<Leave> leaves;
+
+    @OneToMany(mappedBy = "user")
+    private List<Attendance> attendances;
+
 }
+
+

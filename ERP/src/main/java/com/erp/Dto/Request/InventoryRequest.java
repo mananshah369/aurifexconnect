@@ -14,13 +14,11 @@ public class InventoryRequest {
     @Pattern(regexp = "^.{2,}$",message = "Please Enter the More then 2 Character")
     @NotBlank(message="Please Enter Value")
     private String itemName;
-
     @DecimalMin(value = "1.0", inclusive = true, message = "Quantity must be at least 1")
     private double itemQuantity;
     private String itemDescription;
     private double itemCost;
     private String categories;
     private long branchAndInventoryId;
-    private String categories;
 
 }
