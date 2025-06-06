@@ -27,7 +27,7 @@ public class Salary {
     private YearMonth month;
 
     @Column(nullable = false)
-    private Double baseSalary;
+    private long baseSalary;
 
     @Column(nullable = false)
     private Integer workingDays;
@@ -36,13 +36,13 @@ public class Salary {
     private Integer paidDays;
 
     @Column(nullable = false)
-    private Double deductions;
+    private long deductions;
 
     @Column(nullable = false)
-    private Double bonus;
+    private long bonus;
 
     @Column(nullable = false)
-    private Double netSalary;
+    private long netSalary;
 
     private String remarks;
 

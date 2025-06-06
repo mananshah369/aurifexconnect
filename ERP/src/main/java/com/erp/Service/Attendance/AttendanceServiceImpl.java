@@ -15,12 +15,13 @@ import com.erp.Repository.Attendance.AttendanceRepository;
 import com.erp.Repository.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.time.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 @AllArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService {
@@ -34,13 +35,18 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceResponse checkIn(Param param) {
         long userId = param.getUserId();
         LocalDate today = LocalDate.now(clock);
-
+        attendanceRepository.findTopByUser_IdAndCheckOutIsNullOrderByDateDesc(userId)
+                .filter(a -> a.getDate().isBefore(today))
+                .filter(a -> Duration.between(a.getCheckIn(), LocalDateTime.now(clock)).toHours() >= 8)
+                .ifPresent(att -> {
+                    att.setCheckOut(att.getCheckIn().plusHours(8));
+                    calculateWorkingDetails(att);
+                    attendanceRepository.save(att);
+                });
         attendanceRepository.findByUser_IdAndDate(userId, today)
                 .ifPresent(a -> { throw new AttendanceAlreadyExistsException("Already checked in today."); });
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
-
         Attendance attendance = new Attendance();
         attendance.setUser(user);
         attendance.setDate(today);
@@ -48,7 +54,6 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setStatus(AttendanceStatus.PRESENT);
         attendance.setWorkingHours(0.0);
         attendance.setWorkingDays(0.0);
-
         attendanceRepository.save(attendance);
         return attendanceMapper.mapToResponse(attendance);
     }
@@ -73,7 +78,6 @@ public class AttendanceServiceImpl implements AttendanceService {
         return response;
     }
 
-
     @Override
     public AttendanceResponse updateAttendance(AttendanceRequest request) {
         Attendance attendance = attendanceRepository.findByUser_IdAndDate(request.getUserId(), request.getDate())
@@ -88,10 +92,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         return attendanceMapper.mapToResponse(attendance);
     }
 
-
     @Override
     public AttendanceResponse getAttendanceById(Param param) {
-        Attendance attendance = attendanceRepository.findById(param.getUserId())
+        Attendance attendance = attendanceRepository.findById(param.getId())
                 .orElseThrow(() -> new AttendanceNotFoundException("Attendance not found."));
         return attendanceMapper.mapToResponse(attendance);
     }
@@ -164,6 +167,18 @@ public class AttendanceServiceImpl implements AttendanceService {
         return attendanceMapper.mapToResponse(attendances.get(attendances.size() - 1));
     }
 
+    @Override
+    public int countPresentDaysByUserIdAndMonth(Long userId, YearMonth month) {
+        LocalDate startDate = month.atDay(1);
+        LocalDate endDate = month.atEndOfMonth();
+        List<Attendance> attendanceList = attendanceRepository.findByUser_IdAndDateBetween(userId, startDate, endDate);
+        long presentDays = attendanceList.stream()
+                .filter(att -> att.getCheckOut() != null)
+                .map(Attendance::getDate)
+                .distinct()
+                .count();
+        return (int) presentDays;
+    }
 
     // Clean and shortened working hours and days calculator
     private void calculateWorkingDetails(Attendance a) {
@@ -189,5 +204,21 @@ public class AttendanceServiceImpl implements AttendanceService {
         if (days == 1.0) return "1 day";
         if (days == 0.5) return "Half day";
         return days + " days";
+    }
+
+    @Override
+    public void autoCheckout() {
+        LocalDate today = LocalDate.now(clock);
+        List<Attendance> pendingCheckouts =
+                attendanceRepository.findByDateAndCheckOutIsNull(today);
+        for (Attendance attendance : pendingCheckouts) {
+            LocalDateTime checkIn = attendance.getCheckIn();
+            LocalDateTime autoCheckOut = checkIn.plusHours(8); // Assume 8 working hours
+            attendance.setCheckOut(autoCheckOut);
+            attendance.setWorkingHours(8.0);
+            attendance.setWorkingDays(1.0);
+            attendanceRepository.save(attendance);
+        }
+
     }
 }

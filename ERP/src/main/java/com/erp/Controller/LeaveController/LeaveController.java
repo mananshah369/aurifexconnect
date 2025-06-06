@@ -35,54 +35,6 @@ public class LeaveController {
         return ResponseBuilder.success(HttpStatus.CREATED, "Leave request submitted", response);
     }
 
-    @PutMapping("/approve")
-    @Operation(summary = "Approve Leave",
-            description = "API Endpoint to approve a leave request",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Leave approved successfully"),
-                    @ApiResponse(responseCode = "400", description = "Invalid request data")
-            })
-    public ResponseEntity<ResponseStructure<LeaveResponse>> approveLeave(@Valid @RequestBody LeaveRequest request) {
-        LeaveResponse response = leaveService.updateLeaveStatus(request);
-        return ResponseBuilder.success(HttpStatus.OK, "Leave approved", response);
-    }
-
-    @PutMapping("/reject")
-    @Operation(summary = "Reject Leave",
-            description = "API Endpoint to reject a leave request",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Leave request rejected successfully"),
-                    @ApiResponse(responseCode = "400", description = "Invalid request data")
-            })
-    public ResponseEntity<ResponseStructure<LeaveResponse>> rejectLeave(@Valid @RequestBody LeaveRequest request) {
-        LeaveResponse response = leaveService.updateLeaveStatus(request);
-        return ResponseBuilder.success(HttpStatus.OK, "Leave rejected", response);
-    }
-
-    @PostMapping("/getbyuserid")
-    @Operation(summary = "Get Leave Requests by User ID",
-            description = "API Endpoint to find leave requests by user ID",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Found leave requests by user"),
-                    @ApiResponse(responseCode = "400", description = "Invalid request data")
-            })
-    public ResponseEntity<ResponseStructure<LeaveResponse>> getLeaveByUserId(@Valid @RequestBody Param param) {
-        LeaveResponse response = leaveService.getLeaveRequestsByUserId(param);
-        return ResponseBuilder.success(HttpStatus.OK, "Leave request by user", response);
-    }
-
-    @GetMapping("/all")
-    @Operation(summary = "Get All Leave Requests",
-            description = "API Endpoint to retrieve all leave requests",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "All leave requests retrieved successfully"),
-                    @ApiResponse(responseCode = "400", description = "Invalid request data")
-            })
-    public ResponseEntity<ListResponseStructure<LeaveResponse>> getAllLeaveRequests() {
-        List<LeaveResponse> response = leaveService.getAllLeaveRequests();
-        return ResponseBuilder.success(HttpStatus.OK, "All leave requests retrieved", response);
-    }
-
     @PutMapping("/update")
     @Operation(summary = "Update Leave Request",
             description = "API Endpoint to update leave request by leave ID",
@@ -95,16 +47,16 @@ public class LeaveController {
         return ResponseBuilder.success(HttpStatus.OK, "Leave request updated", response);
     }
 
-    @PostMapping("/status")
-    @Operation(summary = "Get Leave Requests by Status",
-            description = "API Endpoint to find leave requests filtered by status",
+    @PostMapping("/getbyuserid")
+    @Operation(summary = "Get Leave Requests by User ID",
+            description = "API Endpoint to find leave requests by user ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Found leave requests by status"),
+                    @ApiResponse(responseCode = "200", description = "Found leave requests by user"),
                     @ApiResponse(responseCode = "400", description = "Invalid request data")
             })
-    public ResponseEntity<ListResponseStructure<LeaveResponse>> getLeavesByStatus(@Valid @RequestBody LeaveRequest request) {
-        List<LeaveResponse> response = leaveService.getLeaveRequestsByStatus(request);
-        return ResponseBuilder.success(HttpStatus.OK, "Leave requests by status", response);
+    public ResponseEntity<ListResponseStructure<LeaveResponse>> getLeaveByUserId(@Valid @RequestBody Param param) {
+        List<LeaveResponse> responseList = leaveService.getLeaveRequestsByUserId(param);
+        return ResponseBuilder.success(HttpStatus.OK, "Leave requests by user", responseList);
     }
 
     @PostMapping("/date-range")
@@ -119,9 +71,47 @@ public class LeaveController {
         return ResponseBuilder.success(HttpStatus.OK, "Leave requests by date range", response);
     }
 
+
+    @PostMapping("/status")
+    @Operation(summary = "Get Leave Requests by Status",
+            description = "API Endpoint to find leave requests filtered by status",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Found leave requests by status"),
+                    @ApiResponse(responseCode = "400", description = "Invalid request data")
+            })
+    public ResponseEntity<ListResponseStructure<LeaveResponse>> getLeavesByStatus(@Valid @RequestBody LeaveRequest request) {
+        List<LeaveResponse> response = leaveService.getLeaveRequestsByStatus(request);
+        return ResponseBuilder.success(HttpStatus.OK, "Leave requests by status", response);
+    }
+
+    @PostMapping("/all")
+    @Operation(summary = "Get All Leave Requests",
+            description = "API Endpoint to retrieve all leave requests",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "All leave requests retrieved successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid request data")
+            })
+    public ResponseEntity<ListResponseStructure<LeaveResponse>> getAllLeaveRequests() {
+        List<LeaveResponse> response = leaveService.getAllLeaveRequests();
+        return ResponseBuilder.success(HttpStatus.OK, "All leave requests retrieved", response);
+    }
+
+    @PutMapping("/status")
+    @Operation(summary = "Update Leave Status",
+            description = "API Endpoint to update the status of a leave request (APPROVED, REJECTED, PENDING)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Leave status updated successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid request data"),
+                    @ApiResponse(responseCode = "404", description = "Leave request not found")
+            })
+    public ResponseEntity<ResponseStructure<LeaveResponse>> updateLeaveStatus(@Valid @RequestBody LeaveRequest request) {
+        LeaveResponse response = leaveService.updateLeaveStatus(request);
+        return ResponseBuilder.success(HttpStatus.OK, "Leave status updated", response);
+    }
+
     @PostMapping("/delete")
     @Operation(summary = "Delete Leave Request",
-            description = "API Endpoint to delete leave request by ID",
+            description = "API Endpoint to delete leave request by Leave ID & UserID",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Leave request deleted successfully"),
                     @ApiResponse(responseCode = "400", description = "Invalid request data")
