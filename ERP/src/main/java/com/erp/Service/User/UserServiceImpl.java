@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserServices {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserIdentity userIdentity;
-
-
     private final static String DEFAULT_ROLE = "EMPLOYEE";
 
     @Override
