@@ -13,10 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.GetMapping;
-=======
->>>>>>> a3a177411f3e21675f32c32b4bee4a11fb240bc4
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/invoice")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
     private final PdfService pdfService;
     private final EmailService emailService;
 
-    @PostMapping("invoice")
+    @PostMapping("/create")
     public String invoicePreview(@RequestBody InvoiceRequest request,
                                  Model model){
         InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(request);
@@ -40,7 +36,7 @@ public class InvoiceController {
         return "invoice-preview";
     }
 
-    @PostMapping("invoice/find")
+    @PostMapping("/find")
     public String findInvoice(@RequestBody InvoiceRequest request,
                               Model model)
     {
@@ -61,7 +57,7 @@ public class InvoiceController {
     }
 
 
-    @PostMapping("invoice/sendMail")
+    @PostMapping("/sendMail")
     public ResponseEntity<String> sendInvoiceEmail(@RequestBody InvoiceRequest request) throws MessagingException {
 
         InvoiceGenerator invoiceGenerator = invoiceService.fetchInvoice(request);
