@@ -18,12 +18,9 @@ public class AdminRequest {
 
     private String email;
 
-
     private long contactNo;
 
     @Password
     private String password;
 
 }
-
-

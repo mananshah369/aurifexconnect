@@ -41,26 +41,16 @@ public class ResponseBuilder {
                 .body(listResponseStructure);
     }
 
-    public static <T> ResponseEntity<SetResponseStructure<T>> success(HttpStatus status, String message, Set<T> data) {
-        SetResponseStructure<T> setResponseStructure = SetResponseStructure.<T>builder()
-                .status(status.value())
-                .message(message)
-                .data(data)
-                .build();
 
-        return ResponseEntity.status(status)
-                .body(setResponseStructure);
-    }
-
-    public static ResponseEntity<SimpleResponseStructure> success(HttpStatus status,HttpHeaders headers, String message){
-        SimpleResponseStructure simpleResponseStructure = SimpleResponseStructure.builder()
+    public static <T> ResponseEntity<ResponseStructure<T>> success(HttpStatus status,HttpHeaders headers, String message) {
+        ResponseStructure<T> structure = ResponseStructure.<T>builder()
                 .status(status.value())
                 .message(message)
                 .build();
 
         return ResponseEntity.status(status)
                 .headers(headers)
-                .body(simpleResponseStructure);
+                .body(structure);
     }
 
     public static ResponseEntity<SimpleErrorResponse> error(HttpStatus status, String message) {

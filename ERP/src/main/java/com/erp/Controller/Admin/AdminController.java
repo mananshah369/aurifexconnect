@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 @RestController
 @RequestMapping("${app.base-url}")
 @AllArgsConstructor
@@ -26,10 +24,8 @@ public class AdminController {
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
     @PostMapping("/admins")
     public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@Valid @RequestBody AdminRequest adminRequest){
-
         AdminResponse adminResponse = adminService.createAdmin(adminRequest);
         return ResponseBuilder.success(HttpStatus.CREATED,"Admin created successfully !!",adminResponse);
-
     }
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
