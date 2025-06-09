@@ -21,7 +21,7 @@ public class PdfService {
     public byte[] generateInvoicePdf(InvoiceRequest request){
         try {
 
-            InvoiceGenerator invoice = invoiceService.fetchInvoice(request.getMasterId());
+            InvoiceGenerator invoice = invoiceService.fetchInvoice(request);
 
             //prepare thymeleaf context
             Context context = new Context();

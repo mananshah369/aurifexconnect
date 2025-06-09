@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,15 @@ public class InvoiceController {
         InvoiceGenerator invoiceGenerator = invoiceService.createInvoice(request);
 
         model.addAttribute("invoice",invoiceGenerator);
+        return "invoice-preview";
+    }
+
+    @PostMapping("invoice/find")
+    public String findInvoice(@RequestBody InvoiceRequest request,
+                              Model model)
+    {
+        InvoiceGenerator invoice = invoiceService.fetchInvoice(request);
+        model.addAttribute("invoice",invoice);
         return "invoice-preview";
     }
 
