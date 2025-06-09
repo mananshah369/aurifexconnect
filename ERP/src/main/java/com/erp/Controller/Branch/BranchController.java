@@ -1,7 +1,7 @@
 package com.erp.Controller.Branch;
 
 import com.erp.Dto.Request.BranchRequest;
-import com.erp.Dto.Request.CommonParam;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.BranchResponse;
 import com.erp.Service.BranchService.BranchService;
 import com.erp.Utility.ListResponseStructure;
@@ -60,7 +60,7 @@ public class BranchController {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })
-    public ResponseEntity<ResponseStructure<BranchResponse>> deleteBranchById(@RequestBody CommonParam param){
+    public ResponseEntity<ResponseStructure<BranchResponse>> deleteBranchById(@RequestBody CommanParam param){
         BranchResponse branchResponse = branchService.deleteBranchById(param);
         return ResponseBuilder.success(HttpStatus.OK,"Branch Deleted Successfully!",branchResponse);
     }
@@ -73,7 +73,7 @@ public class BranchController {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })
-    public ResponseEntity<ListResponseStructure<BranchResponse>> getByIdOrBranchName(@RequestBody CommonParam param){
+    public ResponseEntity<ListResponseStructure<BranchResponse>> getByIdOrBranchName(@RequestBody CommanParam param){
         List<BranchResponse> branchResponse = branchService.getByIdOrBranchName(param);
         return ResponseBuilder.success(HttpStatus.OK,"Branch Found Successfully",branchResponse);
     }
@@ -99,7 +99,7 @@ public class BranchController {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })
-    public ResponseEntity<ListResponseStructure<BranchResponse>> getBranchesByItemName(@RequestBody CommonParam param){
+    public ResponseEntity<ListResponseStructure<BranchResponse>> getBranchesByItemName(@RequestBody CommanParam param){
         List<BranchResponse> branchResponse = branchService.getBranchesByItemName(param);
         return ResponseBuilder.success(HttpStatus.OK,"Branches retrieved successfully!",branchResponse);
     }

@@ -8,13 +8,15 @@ import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
 import com.erp.Mapper.Inventory.InventoryMapper;
 import com.erp.Model.Branch;
 import com.erp.Model.Inventory;
+import com.erp.Model.Tax;
 import com.erp.Repository.Branch.BranchRepository;
 import com.erp.Repository.Inventory.InventoryRepository;
+import com.erp.Repository.Tax.TaxRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +25,7 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryMapper inventoryMapper;
     private final BranchRepository branchRepository;
+    private final TaxRepository taxRepository;
 
     @Override
     public InventoryResponse addItem(InventoryRequest inventoryRequest) {
@@ -30,6 +33,12 @@ public class InventoryServiceImpl implements InventoryService {
                 .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id"));
 
         Inventory inventory = inventoryMapper.mapToInventory(inventoryRequest);
+        List<Tax> taxes = inventoryRequest.getApplicableTaxNames().stream()
+                .map(taxName -> taxRepository.findByTaxName(taxName)
+                        .orElseThrow(() -> new IllegalArgumentException("Tax not found: " + taxName)))
+                .collect(Collectors.toList());
+        inventory.setTaxes(taxes);
+
         inventory.setBranch(branch);
         inventoryRepository.save(inventory);
         return inventoryMapper.mapToInventoryResponse(inventory);

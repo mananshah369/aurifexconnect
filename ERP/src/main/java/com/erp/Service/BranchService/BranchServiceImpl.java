@@ -1,7 +1,7 @@
 package com.erp.Service.BranchService;
 
 import com.erp.Dto.Request.BranchRequest;
-import com.erp.Dto.Request.CommonParam;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.BranchResponse;
 import com.erp.Exception.Branch_Exception.BranchNotFoundException;
 import com.erp.Exception.Inventory_Exception.InventoryNotFoundException;
@@ -40,7 +40,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public BranchResponse deleteBranchById(CommonParam param){
+    public BranchResponse deleteBranchById(CommanParam param){
         Branch branch = branchRepository.findById(param.getId())
                 .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id "+param.getId()));
         branchRepository.deleteById(param.getId());
@@ -54,7 +54,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public List<BranchResponse> getByIdOrBranchName(CommonParam param) {
+    public List<BranchResponse> getByIdOrBranchName(CommanParam param) {
         List<Branch> branches = branchRepository.findByBranchIdOrBranchName(param.getId(),param.getName());
         if (branches.isEmpty()) {
             throw new BranchNotFoundException("No branches Found, Invalid Id ");
@@ -64,7 +64,7 @@ public class BranchServiceImpl implements BranchService{
     }
 
     @Override
-    public List<BranchResponse> getBranchesByItemName(CommonParam param){
+    public List<BranchResponse> getBranchesByItemName(CommanParam param){
         List<Branch> branches = branchRepository.findBranchByInventories_ItemName(param.getName());
 
         if(branches.isEmpty()){
