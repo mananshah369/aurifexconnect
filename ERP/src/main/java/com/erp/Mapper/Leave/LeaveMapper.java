@@ -8,11 +8,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LeaveMapper {
-    Leave mapToLeave(LeaveRequest dto);
-    void updateLeave(@MappingTarget Leave entity, LeaveRequest dto);
-    @Mapping(source = "user", target = "user")
+    Leave mapToLeave(LeaveRequest request);
+
+    void updateLeave(LeaveRequest request, @MappingTarget Leave leave);
+
     LeaveResponse mapToLeaveResponse(Leave leave);
+
     List<LeaveResponse> mapToLeaveResponseList(List<Leave> leaveList);
 }
-
-

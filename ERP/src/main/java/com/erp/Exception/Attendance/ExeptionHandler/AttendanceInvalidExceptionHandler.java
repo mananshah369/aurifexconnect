@@ -1,5 +1,6 @@
-package com.erp.Exception.Salary;
+package com.erp.Exception.Attendance.ExeptionHandler;
 
+import com.erp.Exception.Attendance.AttendanceInvalidException;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.SimpleErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -8,10 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class SalaryExceptionHandler {
+public class AttendanceInvalidExceptionHandler {
 
     @ExceptionHandler
-    ResponseEntity<SimpleErrorResponse> salaryExceptionHandler(SalaryNotFoundException e){
+    ResponseEntity<SimpleErrorResponse> AttendanceInvalidExceptionHandler(AttendanceInvalidException e){
         return ResponseBuilder.error(HttpStatus.NOT_FOUND, e.getMessage());
     }
 }

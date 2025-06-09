@@ -1,7 +1,8 @@
-package com.erp.Service.SalaryService;
+package com.erp.Service.SalarySlip;
 
 import com.erp.Dto.Request.SalaryRequest;
 import com.erp.Dto.Response.SalaryResponse;
+import com.erp.Service.SalaryService.SalaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -31,8 +32,6 @@ public class SalarySlipGenerator {
             render.layout();
             render.createPDF(baos, false);
             render.finishPDF();
-
-
             return baos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Error generating salary slip PDF: " + e.getMessage(), e);

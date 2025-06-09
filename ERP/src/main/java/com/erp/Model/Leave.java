@@ -13,9 +13,6 @@ import java.time.LocalDate;
 @Table(name = "leave_request")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Leave {
     @Id
@@ -23,7 +20,6 @@ public class Leave {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
     private User user;
 
     @Column(name = "start_date")

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
 public interface LeaveRepository extends JpaRepository<Leave, Long> {
     List<Leave> findByUserId(long userId);
     List<Leave> findByStatus(LeaveStatus status);

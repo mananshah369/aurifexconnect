@@ -9,9 +9,6 @@ import java.time.YearMonth;
 @Table(name = "salaries")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EntityListeners(EntityListeners.class)
 public class Salary {
 
@@ -20,7 +17,6 @@ public class Salary {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
     private User user;
 
     @Column(nullable = false)

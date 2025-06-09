@@ -1,4 +1,4 @@
-package com.erp.Exception;
+package com.erp.Exception.JWTException;
 
 
 import lombok.AllArgsConstructor;
