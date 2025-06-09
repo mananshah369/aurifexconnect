@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Table(name = "holiday")
 @Getter
 @Setter
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Holiday {
 
@@ -22,7 +21,6 @@ public class Holiday {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
     private User user;
 
     @CreatedDate

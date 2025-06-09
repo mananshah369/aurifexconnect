@@ -1,5 +1,6 @@
-package com.erp.Exception.Attendance;
+package com.erp.Exception.Attendance.ExeptionHandler;
 
+import com.erp.Exception.Attendance.AttendanceAlreadyExistsException;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.SimpleErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AttendanceExceptionHandler {
-
-    @ExceptionHandler
-    ResponseEntity<SimpleErrorResponse> attendanceNotFoundExceptionHandler(AttendanceNotFoundException e){
-        return ResponseBuilder.error(HttpStatus.NOT_FOUND, e.getMessage());
-    }
+public class AttendanceAlreadyExistsExceptionHandler {
 
     @ExceptionHandler
     ResponseEntity<SimpleErrorResponse> attendanceAlreadyExistsExceptionHandler(AttendanceAlreadyExistsException e){
