@@ -1,6 +1,5 @@
 package com.erp.Controller.User;
 
-
 import com.erp.Dto.Request.CommonParam;
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Request.UserUpdateRequest;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -69,6 +67,5 @@ public class UserController {
         return ResponseBuilder.success(HttpStatus.OK,"User delete Successfully !!", userResponse);
 
     }
-
 
 }
