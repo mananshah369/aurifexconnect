@@ -55,7 +55,7 @@ public class BranchServiceImpl implements BranchService{
 
     @Override
     public List<BranchResponse> getByIdOrBranchName(CommanParam param) {
-        List<Branch> branches = branchRepository.findByBranchIdOrBranchName(param.getId(),param.getName());
+        List<Branch> branches = branchRepository.findByBranchIdOrBranchNameOrBranchLocationOrBranchStatus(param.getId(),param.getName(),param.getLocation(),param.getBranchStatus());
         if (branches.isEmpty()) {
             throw new BranchNotFoundException("No branches Found, Invalid Id ");
         }else {

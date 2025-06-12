@@ -73,7 +73,7 @@ public class BranchController {
                             @Content(schema = @Schema(implementation = SimpleErrorResponse.class))
                     })
             })
-    public ResponseEntity<ListResponseStructure<BranchResponse>> getByIdOrBranchName(@RequestBody CommanParam param){
+    public ResponseEntity<ListResponseStructure<BranchResponse>> getByIdOrBranchNameOrBranchLocationOrBranchStatus(@RequestBody CommanParam param){
         List<BranchResponse> branchResponse = branchService.getByIdOrBranchName(param);
         return ResponseBuilder.success(HttpStatus.OK,"Branch Found Successfully",branchResponse);
     }
