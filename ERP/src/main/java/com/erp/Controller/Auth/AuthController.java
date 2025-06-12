@@ -6,13 +6,13 @@ import com.erp.Service.Auth.AuthService;
 import com.erp.Service.TokenGeneration.TokenGenerationService;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.ResponseStructure;
-import com.erp.Utility.SimpleResponseStructure;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("${app.base-url}")
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<SimpleResponseStructure> logout(
+    public ResponseEntity<ResponseStructure<AuthRecord>> logout(
             @CookieValue("rt") String refreshToken,
             @CookieValue("at") String accessToken) {
         HttpHeaders headers = authService.logout(refreshToken, accessToken);

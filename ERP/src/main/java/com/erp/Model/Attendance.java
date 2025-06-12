@@ -12,13 +12,11 @@ import java.time.LocalDateTime;
 @Table(name = "attendance")
 @Getter
 @Setter
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
     @ManyToOne

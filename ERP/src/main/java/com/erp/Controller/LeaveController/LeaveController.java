@@ -71,7 +71,6 @@ public class LeaveController {
         return ResponseBuilder.success(HttpStatus.OK, "Leave requests by date range", response);
     }
 
-
     @PostMapping("/status")
     @Operation(summary = "Get Leave Requests by Status",
             description = "API Endpoint to find leave requests filtered by status",

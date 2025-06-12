@@ -1,9 +1,9 @@
-package com.erp.Controller.Salary;
+package com.erp.Controller.SalarySlip;
 
 import com.erp.Dto.Request.SalaryRequest;
 import com.erp.Dto.Response.SalaryResponse;
 import com.erp.Service.SalaryService.SalaryService;
-import com.erp.Service.SalaryService.SalarySlipGenerator;
+import com.erp.Service.SalarySlip.SalarySlipGenerator;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
