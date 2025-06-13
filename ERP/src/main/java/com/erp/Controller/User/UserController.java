@@ -1,11 +1,6 @@
 package com.erp.Controller.User;
 
-<<<<<<< HEAD
-
 import com.erp.Dto.Request.CommanParam;
-=======
-import com.erp.Dto.Request.CommonParam;
->>>>>>> a3a177411f3e21675f32c32b4bee4a11fb240bc4
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Request.UserUpdateRequest;
 import com.erp.Dto.Response.UserResponse;

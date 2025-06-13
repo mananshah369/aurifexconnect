@@ -24,9 +24,6 @@ public class InventoryRequest {
     private double itemCost;
     private String categories;
     private long branchAndInventoryId;
-<<<<<<< HEAD
     private List<TaxName> applicableTaxNames;
-=======
->>>>>>> a3a177411f3e21675f32c32b4bee4a11fb240bc4
 
 }

@@ -10,8 +10,7 @@ import java.util.List;
 @Repository
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
-    
-    List<Branch> findByBranchIdOrBranchNameOrBranchLocationOrBranchStatus(long branchId, String name,String location,BranchStatus branchStatus);
+    List<Branch> findByBranchIdOrBranchNameOrLocationOrBranchStatus(long branchId, String name,String location,BranchStatus branchStatus);
 
     List<Branch> findBranchByInventories_ItemName(String itemName);
 }
