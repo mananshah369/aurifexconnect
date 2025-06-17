@@ -30,7 +30,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryResponse addItem(InventoryRequest inventoryRequest) {
         Branch branch = branchRepository.findById(inventoryRequest.getBranchAndInventoryId())
-                .orElseThrow(()-> new BranchNotFoundException("Branch Not Found, Invalid Id"));
+                .orElseThrow(() -> new BranchNotFoundException("Branch Not Found, Invalid Id"));
 
         Inventory inventory = inventoryMapper.mapToInventory(inventoryRequest);
         List<Tax> taxes = inventoryRequest.getApplicableTaxNames().stream()
@@ -49,7 +49,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory inventory = inventoryRepository.findById(inventoryRequest.getBranchAndInventoryId())
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found , invalid id "));
 
-        inventoryMapper.mapToInventoryEntity(inventoryRequest,inventory);
+        inventoryMapper.mapToInventoryEntity(inventoryRequest, inventory);
 
         inventoryRepository.save(inventory);
         return inventoryMapper.mapToInventoryResponse(inventory);
@@ -57,10 +57,10 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<InventoryResponse> findByItemIdOrName(CommanParam id) {
-        List<Inventory> inventory = inventoryRepository.findByItemIdOrItemName(id.getId(),id.getName());
-        if(inventory.isEmpty()){
+        List<Inventory> inventory = inventoryRepository.findByItemIdOrItemName(id.getId(), id.getName());
+        if (inventory.isEmpty()) {
             throw new InventoryNotFoundException("Inventory not found , invalid id ");
-        }else{
+        } else {
             return inventoryMapper.mapToInventoryResponse(inventory);
         }
     }
@@ -81,13 +81,13 @@ public class InventoryServiceImpl implements InventoryService {
 
         if (inventories.isEmpty()) {
             throw new InventoryNotFoundException("No Inventories Not Found");
-        }else {
+        } else {
             return inventoryMapper.mapToInventoryResponse(inventories);
         }
     }
 
     @Override
-    public List<String> fetchAllCategories(){
+    public List<String> fetchAllCategories() {
         List<Inventory> inventories = inventoryRepository.findAll();
         return inventories.stream()
                 .map(Inventory::getCategories)
