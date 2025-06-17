@@ -34,4 +34,9 @@ public class Ledger {
     @OneToMany(mappedBy = "ledger")
     private List<Master> masters;
 
+    @OneToMany(mappedBy = "ledger")
+    private List<AgainstRefMap> againstRefMaps;
+
+    @OneToOne(mappedBy = "ledger")
+    private  InvoiceGenerator invoiceGenerator;
 }

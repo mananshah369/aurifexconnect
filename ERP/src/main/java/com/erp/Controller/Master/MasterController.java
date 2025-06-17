@@ -18,8 +18,8 @@ public class MasterController {
     private final MasterService masterService;
 
     @PostMapping("master")
-    public ResponseEntity<ResponseStructure<MasterResponse>> createMaster(@RequestBody MasterRequest masterRequest, @RequestParam long ledgerId) {
-        MasterResponse masterResponse = masterService.createMaster(masterRequest,ledgerId);
+    public ResponseEntity<ResponseStructure<MasterResponse>> createMaster(@RequestBody MasterRequest masterRequest) {
+        MasterResponse masterResponse = masterService.createMaster(masterRequest);
         return ResponseBuilder.success(HttpStatus.CREATED,"Master Created Successfully",masterResponse);
     }
 //
@@ -29,9 +29,9 @@ public class MasterController {
 //        return ResponseBuilder.success(HttpStatus.OK,"Master Updated Successfully",masterResponse);
 //    }
 
-    @GetMapping("master/{masterId}")
-    public ResponseEntity<ResponseStructure<MasterResponse>> findByMasterId(@PathVariable Long masterId) {
-        MasterResponse masterResponse = masterService.findById(masterId);
+    @GetMapping("master")
+    public ResponseEntity<ResponseStructure<MasterResponse>> findByMasterId(@RequestBody MasterRequest masterRequest) {
+        MasterResponse masterResponse = masterService.findById(masterRequest);
         return ResponseBuilder.success(HttpStatus.OK,"Master Found Successfully",masterResponse);
     }
 

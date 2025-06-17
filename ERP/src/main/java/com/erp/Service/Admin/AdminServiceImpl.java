@@ -1,8 +1,10 @@
 package com.erp.Service.Admin;
 
 import com.erp.Dto.Request.AdminRequest;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.AdminResponse;
 import com.erp.Exception.Admin.AdminNotFoundException;
+import com.erp.Exception.SameEmail.SameEmailFoundException;
 import com.erp.Mapper.Admin.AdminMapper;
 import com.erp.Model.Admin;
 import com.erp.Model.RootUser;
@@ -14,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,6 +35,10 @@ public class AdminServiceImpl implements AdminService {
         // Get the current authenticated RootUser
         RootUser currentUser = (RootUser) userIdentity.getCurrentUser();
 
+        if (adminRepository.findByEmail(adminRequest.getEmail()).isPresent()) {
+            throw new SameEmailFoundException("Admin already exists with this email !");
+        }
+
         Admin admin = adminMapper.mapTAdmin(adminRequest);
         admin.setCreatedByRootUserId(currentUser.getId());
         admin.setLastUpdatedByRootUserId(currentUser.getId());
@@ -45,18 +52,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
     public List<AdminResponse> getListOfAdmins() {
-        List<Admin> admins = adminRepository.findAll();
+
+        List<Admin> admins = adminRepository.findByIsActiveTrue();
         return adminMapper.mapToListOfAdminResponse(admins);
+
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
-    public AdminResponse updateAdminById(AdminRequest adminRequest, long adminId) {
+    public AdminResponse updateAdminById(AdminRequest adminRequest) {
         // Get the current authenticated RootUser
         RootUser currentUser = (RootUser) userIdentity.getCurrentUser();
 
-        Admin admin = adminRepository.findById(adminId)
-                .orElseThrow(() -> new AdminNotFoundException("Invalid ID: " + adminId + " ,admin not found !"));
+        Admin admin = adminRepository.findById(adminRequest.getId())
+                .orElseThrow(() -> new AdminNotFoundException("Invalid ID: " + adminRequest.getId() + " ,admin not found !"));
 
         adminMapper.mapToAdminEntity(adminRequest, admin);
         admin.setLastUpdatedByRootUserId(currentUser.getId());
@@ -67,18 +76,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminResponse deleteAdminById(long id) {
+    public AdminResponse deleteAdminById(CommanParam commanParam) {
         RootUser currentUser = (RootUser) userIdentity.getCurrentUser();
         if (currentUser == null) {
             throw new SecurityException("No authenticated user found");
         }
 
-        Admin admin = adminRepository.findById(id)
-                .orElseThrow(()-> new AdminNotFoundException("Admin not found with this id: "+id));
+        Admin admin = adminRepository.findById(commanParam.getId())
+                .orElseThrow(()-> new AdminNotFoundException("Admin not found with this id: "+ commanParam.getId()));
 
-        admin.set_Active(false);
+        admin.setActive(false);
         adminRepository.save(admin);
 
         return adminMapper.mapToAdminResponse(admin);
+    }
+
+    @Override
+    public List<AdminResponse> findAdminByIdOrName(CommanParam commanParam) {
+
+        List<Admin> admins = Collections.singletonList(adminRepository.findByIdOrNameAndIsActiveTrue(commanParam.getId(), commanParam.getName())
+                .orElseThrow(() -> new AdminNotFoundException("Admin not found !!")));
+
+        return adminMapper.mapToListOfAdminResponse(admins);
+
     }
 }

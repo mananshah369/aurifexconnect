@@ -3,7 +3,6 @@ package com.erp.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,6 +24,7 @@ public class Inventory {
     private double itemQuantity;
     private String itemDescription;
     private double itemCost;
+    private String categories;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -32,14 +32,15 @@ public class Inventory {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
-    @ManyToOne
-    private Branch branch;
-
-    @OneToMany(mappedBy = "inventory")
-    private List<InventoryMovement> inventoryMovement;
-
     @OneToMany(mappedBy = "inventory")
     private List<LineItems> lineItems;
 
+    @ManyToOne
+    private Branch branch;
 
+    @OneToMany
+    private List<InventoryMovement> inventoryMovement;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Tax> taxes;
 }

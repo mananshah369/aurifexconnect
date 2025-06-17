@@ -2,6 +2,7 @@ package com.erp.Service.Auth;
 
 import com.erp.Dto.Request.AuthRecord;
 import com.erp.Dto.Request.LoginRequest;
+import com.erp.Exception.User.UserInActiveException;
 import com.erp.Model.GenericUser;
 import com.erp.Security.Filter.TokenBlackListService;
 import com.erp.Security.JWT.ClaimName;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -47,6 +49,13 @@ public class GenericAuthServiceImpl implements AuthService {
                             log.error("User not found after authentication: {}", loginRequest.email());
                             return new UsernameNotFoundException("User not found: " + loginRequest.email());
                         });
+
+                if (!user.isActive()) {
+                    log.warn("Login attempt for inactive user: {}", user.getEmail());
+                    throw new UserInActiveException("User account is inactive. Please contact admin.");
+                }
+
+
                 log.info("Login successful for user: {}", user.getEmail());
                 return createAuthRecordFromUser(user);
             } else {

@@ -25,6 +25,7 @@ public class BankAccount {
 
     private String accountNumber;
 
+    @Enumerated(EnumType.STRING)
     private Banks bankName;
 
     private double openingBalance;
@@ -48,8 +49,5 @@ public class BankAccount {
 
     @OneToMany(mappedBy = "bankAccount")
     private List<Master> masters;
-
-//    @OneToMany(mappedBy = "bankAccount")
-//    private List<Receipt> receipts;
 
 }

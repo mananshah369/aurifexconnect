@@ -20,12 +20,13 @@ import com.erp.Repository.BankAccount.BankAccountRepository;
 import com.erp.Repository.Ledger.LedgerRepository;
 import com.erp.Repository.Master.MasterRepository;
 import com.erp.Repository.Voucher.VoucherRepository;
+import com.erp.Service.AgainstRefMap.AgainstRefMapService;
 import com.erp.Service.Voucher.VoucherService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -37,12 +38,14 @@ public class MasterServiceImpl implements MasterService{
     private final LedgerRepository ledgerRepository;
     private final BankAccountRepository bankAccountRepository;
     private final VoucherRepository voucherRepository;
+    private final AgainstRefMapService againstRefMapService;
 
     @Override
-    public MasterResponse createMaster(MasterRequest masterRequest, long ledgerId) {
+    @Transactional
+    public MasterResponse createMaster(MasterRequest masterRequest) {
 
-        Ledger ledger = ledgerRepository.findById(ledgerId)
-                .orElseThrow(()-> new LedgerNotFoundException("Ledger not found by this id : "+ledgerId+" , Invalid LedgerId"));
+        Ledger ledger = ledgerRepository.findById(masterRequest.getLedgerId())
+                .orElseThrow(()-> new LedgerNotFoundException("Ledger not found by this id : "+masterRequest.getLedgerId()+" , Invalid LedgerId"));
 
         if (masterRequest.getVoucherType() == null) {
             throw new VoucherNotFound("Voucher type must not be null or empty , Voucher Not Found ");
@@ -70,8 +73,8 @@ public class MasterServiceImpl implements MasterService{
     }
 
     @Override
-    public MasterResponse findById(long masterId) {
-        Master master = masterRepository.findById(masterId)
+    public MasterResponse findById(MasterRequest request) {
+        Master master = masterRepository.findById(request.getFindMasterId())
                 .orElseThrow(()-> new MasterNotFoundException("Master Not found By Id , Invalid master Id"));
 
         return masterMapper.mapToMasterResponse(master);
@@ -111,15 +114,19 @@ public class MasterServiceImpl implements MasterService{
 
     private void handleInvoice(Master master){
         master.setTransactionStatus(TransactionStatus.UNPAID);
+        master.setReferenceType(ReferenceType.NEWREF);
     }
 
     private void handleBill(Master master) {
         master.setTransactionStatus(TransactionStatus.UNPAID);
+        master.setReferenceType(ReferenceType.NEWREF);
     }
 
+
+    @Transactional
     private void handleReceipt(Master master, MasterRequest masterRequest) {
         BankAccount bankAccount = bankAccountRepository.findById(masterRequest.getBankAccountId())
-                .orElseThrow(() -> new BankAccountNotFoundException("Bank account not found , Invalid bank Account Id"));
+                .orElseThrow(() -> new BankAccountNotFoundException("Bank account not found, Invalid bank Account Id"));
 
         if (bankAccount.getAccountStatus() != AccountStatus.ACTIVE) {
             throw new InactiveBankAccountException("Bank account is INACTIVE. Please contact admin.");
@@ -132,19 +139,27 @@ public class MasterServiceImpl implements MasterService{
             throw new VoucherNotFound("Provided related ID is not of type SALES");
         }
 
-        List<Master> receipts = masterRepository.findByVoucherTypeAndMasterId(invoice.getVoucherType(),invoice.getMasterId());
-
+        List<Master> receipts = masterRepository.findByVoucherTypeAndMasterId(invoice.getVoucherType(), invoice.getMasterId());
         double totalPaidSoFar = receipts.stream().mapToDouble(Master::getAmount).sum();
+        System.out.println(totalPaidSoFar);
         double newPayment = master.getAmount();
         double invoiceTotal = invoice.getAmount();
         double newTotalPaid = totalPaidSoFar + newPayment;
 
         if (newTotalPaid > invoiceTotal) {
             master.setReferenceType(ReferenceType.ADVANCEREF);
+        } else {
+            master.setReferenceType(ReferenceType.AGAINREF);
+            // Make sure ledger is not null
+            if (master.getLedger() == null) {
+                throw new IllegalStateException("Ledger is required for AGAINREF");
+            }
+            againstRefMapService.againRefMap(master, master.getLedger(), master.getReferenceType(), newPayment);
         }
 
+        // Update bank balance
         bankAccount.setCurrentBalance(bankAccount.getCurrentBalance() + newPayment);
-        master.setBankAccount(bankAccount);
+        bankAccountRepository.save(bankAccount); // <-- Save updated balance
 
         // Update invoice status
         if (Double.compare(newTotalPaid, invoiceTotal) == 0) {
@@ -152,11 +167,16 @@ public class MasterServiceImpl implements MasterService{
         } else {
             invoice.setTransactionStatus(TransactionStatus.PARTIALLY_PAID);
         }
+        masterRepository.save(invoice); // <-- Save updated invoice
 
-        master.setReferenceType(ReferenceType.NEWREF);
+        // Save master if needed
+        master.setBankAccount(bankAccount);
+        masterRepository.save(master);
+
     }
 
 
+    @Transactional
     private void handlePayment(Master master, MasterRequest masterRequest) {
         BankAccount bankAccount = bankAccountRepository.findById(masterRequest.getBankAccountId())
                 .orElseThrow(() -> new BankAccountNotFoundException("Bank account not found , Invalid bank Account Id"));
@@ -183,6 +203,7 @@ public class MasterServiceImpl implements MasterService{
             master.setReferenceType(ReferenceType.ADVANCEREF);
         } else {
             master.setReferenceType(ReferenceType.AGAINREF);
+            againstRefMapService.againRefMap(master,master.getLedger(),master.getReferenceType(),newPayment);
         }
 
         // Deduct payment from bank account

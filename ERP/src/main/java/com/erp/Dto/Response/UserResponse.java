@@ -1,15 +1,9 @@
 package com.erp.Dto.Response;
 
-import com.erp.Model.Role;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

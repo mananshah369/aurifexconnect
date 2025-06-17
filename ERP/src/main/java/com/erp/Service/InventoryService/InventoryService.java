@@ -1,5 +1,6 @@
 package com.erp.Service.InventoryService;
 
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Request.InventoryRequest;
 import com.erp.Dto.Response.InventoryResponse;
 
@@ -21,7 +22,7 @@ public interface InventoryService {
      *                           of the added item (e.g., item ID, success message, or error information).
      *                           A successful response will typically include the details of the newly added item.
      */
-    InventoryResponse addItem(InventoryRequest inventoryRequest,long branchId);
+    InventoryResponse addItem(InventoryRequest inventoryRequest);
 
     /**
      * Updates an existing item in the inventory.
@@ -30,15 +31,15 @@ public interface InventoryService {
      * @param id The ID of the item to update.
      * @return InventoryResponse The updated item details or an error message if the update fails.
      */
-    InventoryResponse updateItem(InventoryRequest inventoryRequest, long id);
+    InventoryResponse updateItem(InventoryRequest inventoryRequest);
 
     /**
      * Retrieves an item from the inventory by its ID.
      *
-     * @param itemId The ID of the item to retrieve.
+     * @param id The ID of the item to retrieve.
      * @return InventoryResponse The item details, or an error message if not found.
      */
-    InventoryResponse findByItemId(long itemId);
+    List<InventoryResponse> findByItemIdOrName(CommanParam id);
 
     /**
      * Deletes an item from the inventory by its ID.
@@ -46,15 +47,17 @@ public interface InventoryService {
      * @param itemId The ID of the item to delete.
      * @return InventoryResponse A success or failure message.
      */
-    InventoryResponse deleteByItemId(long itemId);
+    InventoryResponse deleteByItemId(InventoryRequest inventoryRequest);
 
     /**
      * Retrieves items from the inventory by their name.
      *
-     * @param itemName The name of the items to search for.
+     * @param  The name of the items to search for.
      * @return List<InventoryResponse> A list of matching items, or an empty list if none found.
      */
-    List<InventoryResponse> findByItemName(String itemName);
+//    List<InventoryResponse> findByItemName(String itemName);
 
     List<InventoryResponse> findByAll();
+
+    List<String> fetchAllCategories();
 }
