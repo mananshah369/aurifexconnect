@@ -3,6 +3,7 @@ package com.erp.Controller.Inventory;
 import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Request.InventoryRequest;
 import com.erp.Dto.Response.InventoryResponse;
+import com.erp.Dto.Response.StockValueResponse;
 import com.erp.Service.InventoryService.InventoryService;
 import com.erp.Utility.ListResponseStructure;
 import com.erp.Utility.ResponseBuilder;
@@ -107,5 +108,11 @@ public class InventoryController {
     public ResponseEntity<ListResponseStructure<String>> fetchAllCategories(){
         List<String> categories = inventoryService.fetchAllCategories();
         return ResponseBuilder.success(HttpStatus.OK,"Categories Fetched Successfully",categories);
+    }
+
+    @GetMapping("/inventory/stockvalue")
+    public ResponseEntity<ListResponseStructure<StockValueResponse>> getStockValues() {
+        List<StockValueResponse> stockValueResponses = inventoryService.getStockValueList();
+        return ResponseBuilder.success(HttpStatus.OK, "Stock values fetched successfully", stockValueResponses);
     }
 }

@@ -1,7 +1,9 @@
 package com.erp.Service.Master;
 
 import com.erp.Dto.Request.MasterRequest;
+import com.erp.Dto.Request.PurchaseSalesRequest;
 import com.erp.Dto.Response.MasterResponse;
+import com.erp.Dto.Response.PurchaseSalesResponse;
 import com.erp.Enum.AccountStatus;
 import com.erp.Enum.ReferenceType;
 import com.erp.Enum.TransactionStatus;
@@ -26,6 +28,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -173,6 +176,32 @@ public class MasterServiceImpl implements MasterService{
         master.setBankAccount(bankAccount);
         masterRepository.save(master);
 
+    }
+
+
+    // Insights and Analytics based APIs
+    @Override
+    public List<PurchaseSalesResponse> getPurchaseSalesSummary(PurchaseSalesRequest request) {
+        String format;
+
+        switch (request.getType().toLowerCase()) {
+            case "week" -> format = "%Y-%W";
+            case "month" -> format = "%Y-%m";
+            case "day" -> format = "%Y-%m-%d";
+            case "year" -> format = "%Y";
+            default -> throw new IllegalArgumentException("Invalid type. Use 'day', 'week', or 'month'");
+        }
+
+        List<Object[]> result = masterRepository.getPurchaseSalesSummary(format, request.getVoucherType().name());
+        List<PurchaseSalesResponse> responseList = new ArrayList<>();
+
+        for (Object[] row : result) {
+            String period = (String) row[0];
+            double totalAmount = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            responseList.add(new PurchaseSalesResponse(period, totalAmount));
+        }
+
+        return responseList;
     }
 
 

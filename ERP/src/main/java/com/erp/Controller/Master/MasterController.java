@@ -1,14 +1,19 @@
 package com.erp.Controller.Master;
 
 import com.erp.Dto.Request.MasterRequest;
+import com.erp.Dto.Request.PurchaseSalesRequest;
 import com.erp.Dto.Response.MasterResponse;
+import com.erp.Dto.Response.PurchaseSalesResponse;
 import com.erp.Service.Master.MasterService;
+import com.erp.Utility.ListResponseStructure;
 import com.erp.Utility.ResponseBuilder;
 import com.erp.Utility.ResponseStructure;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -40,4 +45,12 @@ public class MasterController {
 //        MasterResponse masterResponse = masterService.deleteMaster(masterId);
 //        return ResponseBuilder.success(HttpStatus.OK,"Master Deleted Successfully",masterResponse);
 //    }
+
+    @PostMapping("/summary")
+    public ResponseEntity<ListResponseStructure<PurchaseSalesResponse>> getPurchaseSalesSummary(
+            @RequestBody PurchaseSalesRequest request)
+    {
+        List<PurchaseSalesResponse> summary = masterService.getPurchaseSalesSummary(request);
+        return ResponseBuilder.success(HttpStatus.OK, "Summary fetched successfully", summary);
+    }
 }
