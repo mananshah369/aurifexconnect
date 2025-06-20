@@ -1,7 +1,7 @@
 package com.erp.Controller.Admin;
 
 import com.erp.Dto.Request.AdminRequest;
-import com.erp.Dto.Request.CommonParam;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Response.AdminResponse;
 import com.erp.Service.Admin.AdminService;
 import com.erp.Utility.ListResponseStructure;
@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 @RestController
 @RequestMapping("${app.base-url}")
 @AllArgsConstructor
@@ -26,10 +24,8 @@ public class AdminController {
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
     @PostMapping("/admins")
     public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@Valid @RequestBody AdminRequest adminRequest){
-
         AdminResponse adminResponse = adminService.createAdmin(adminRequest);
         return ResponseBuilder.success(HttpStatus.CREATED,"Admin created successfully !!",adminResponse);
-
     }
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
@@ -43,9 +39,9 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
     @PostMapping("/admins/search")
-    public ResponseEntity<ListResponseStructure<AdminResponse>> findAdminByIdOrName(@RequestBody CommonParam commonParam){
+    public ResponseEntity<ListResponseStructure<AdminResponse>> findAdminByIdOrName(@RequestBody CommanParam commanParam){
 
-        List<AdminResponse> adminResponses = adminService.findAdminByIdOrName(commonParam);
+        List<AdminResponse> adminResponses = adminService.findAdminByIdOrName(commanParam);
         return  ResponseBuilder.success(HttpStatus.OK,"Admin found with id or name !",adminResponses);
     }
 
@@ -60,9 +56,9 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('ROLE_ROOT')")
     @DeleteMapping("/admins/delete")
-    public ResponseEntity<ResponseStructure<AdminResponse>> deleteAdminById(@RequestBody CommonParam commonParam){
+    public ResponseEntity<ResponseStructure<AdminResponse>> deleteAdminById(@RequestBody CommanParam commanParam){
 
-        AdminResponse adminResponse = adminService.deleteAdminById(commonParam);
+        AdminResponse adminResponse = adminService.deleteAdminById(commanParam);
         return ResponseBuilder.success(HttpStatus.OK,"Admin delete Successfully !!",adminResponse);
 
     }

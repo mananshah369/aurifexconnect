@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CommonParam {
-
+public class Param {
     private long id;
-    private String name;
+    private long userId;
+    private String firstName;
+    private String lastName;
 }

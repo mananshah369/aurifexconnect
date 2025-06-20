@@ -1,7 +1,6 @@
 package com.erp.Controller.User;
 
-
-import com.erp.Dto.Request.CommonParam;
+import com.erp.Dto.Request.CommanParam;
 import com.erp.Dto.Request.UserRequest;
 import com.erp.Dto.Request.UserUpdateRequest;
 import com.erp.Dto.Response.UserResponse;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -44,9 +42,9 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/users/search")
-    public ResponseEntity<ListResponseStructure<UserResponse>> findByIdOrName(@RequestBody CommonParam commonParamIdOrName){
+    public ResponseEntity<ListResponseStructure<UserResponse>> findByIdOrName(@RequestBody CommanParam commanParamIdOrName){
 
-        List<UserResponse> userResponses = userServices.findByIdOrName(commonParamIdOrName);
+        List<UserResponse> userResponses = userServices.findByIdOrName(commanParamIdOrName);
         return ResponseBuilder.success(HttpStatus.OK,"User found !!", userResponses);
 
     }
@@ -63,12 +61,11 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/users")
-    public ResponseEntity<ResponseStructure<UserResponse>> deleteUserById(@RequestBody CommonParam commonParamId){
+    public ResponseEntity<ResponseStructure<UserResponse>> deleteUserById(@RequestBody CommanParam commanParamId){
 
-        UserResponse userResponse = userServices.deleteUserById(commonParamId);
+        UserResponse userResponse = userServices.deleteUserById(commanParamId);
         return ResponseBuilder.success(HttpStatus.OK,"User delete Successfully !!", userResponse);
 
     }
-
 
 }
