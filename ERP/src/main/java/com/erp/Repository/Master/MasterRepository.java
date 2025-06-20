@@ -4,6 +4,7 @@ import com.erp.Enum.VoucherType;
 import com.erp.Model.Master;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface MasterRepository extends JpaRepository<Master,Long> {
     ORDER BY period ASC
     """, nativeQuery = true)
     List<Object[]> getPurchaseSalesSummary(String format, String voucherType);
+    List<Master> findByReferenceMaster(Master invoice);
 }
