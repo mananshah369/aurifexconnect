@@ -20,7 +20,6 @@ public class MasterMapperImpl implements MasterMapper {
         master.setName(masterRequest.getName());
         master.setDescription(masterRequest.getDescription());
         master.setVoucherType(masterRequest.getVoucherType());
-        master.setVoucherIndex(masterRequest.getVoucherIndex());
 
         return master;
     }
@@ -32,7 +31,6 @@ public class MasterMapperImpl implements MasterMapper {
         master.setName(masterRequest.getName());
         master.setDescription(masterRequest.getDescription());
         master.setVoucherType(masterRequest.getVoucherType());
-        master.setVoucherIndex(masterRequest.getVoucherIndex());
 
     }
 

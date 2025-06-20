@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface MasterRepository extends JpaRepository<Master,Long> {
 
-    List<Master> findByVoucherTypeAndMasterId(VoucherType voucherType, Long relatedId);
+    List<Master> findByReferenceMaster(Master invoice);
 }
